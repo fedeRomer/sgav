@@ -1,6 +1,7 @@
 package com.sgav.sgav.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "login")
 public class Login implements Serializable {
 
@@ -30,5 +32,8 @@ public class Login implements Serializable {
 
     @Column(name = "usuario_id")
     private Integer usuarioId;
+
+    @Column(name = "logged_in")
+    private Boolean loggedIn;
 
 }
