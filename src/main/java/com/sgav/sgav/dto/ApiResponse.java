@@ -3,10 +3,12 @@ package com.sgav.sgav.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class ApiResponse {
 
     private int status;
@@ -18,5 +20,7 @@ public class ApiResponse {
         this.message = message;
         this.result = result;
     }
+
+
 
 }

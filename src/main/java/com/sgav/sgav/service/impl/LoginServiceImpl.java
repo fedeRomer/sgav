@@ -7,6 +7,8 @@ import com.sgav.sgav.dto.LoginDto;
 import com.sgav.sgav.model.Login;
 import com.sgav.sgav.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,17 +30,17 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public ApiResponse login(LoginDto loginDto ) throws SQLException, IOException {
-
+    public ResponseEntity<String> login(LoginDto loginDto ) throws SQLException, IOException {
+        System.out.println("login data " + loginDto.getUsername().concat(" ").concat(loginDto.getPassword()));
         Login login = loginDao.getLogin(loginDto.getUsername(), loginDto.getPassword());
         if(login.getUsername() == null){
-            return new ApiResponse(401, "usuario y/o contraseña incorrecto", null) ;
+            return new ResponseEntity<>( "usuario y/o contraseña incorrecto", HttpStatus.BAD_REQUEST);
         }
       if(!login.getPassword().equals((loginDto.getPassword()))){
-            return new ApiResponse(401, "contraseña incorrecta", null) ;
+          return new ResponseEntity<>( "Contraseña incorrecta", HttpStatus.BAD_REQUEST);
         }
-        System.out.println("login data " + loginDto.getUsername().concat(" ").concat(loginDto.getPassword()));
-        return new ApiResponse(200, "Login success", null) ;
+
+        return new ResponseEntity<>("Login Success",HttpStatus.OK);
     }
 
     @Override

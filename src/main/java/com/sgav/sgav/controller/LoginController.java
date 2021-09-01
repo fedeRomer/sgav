@@ -6,6 +6,7 @@ import com.sgav.sgav.model.Login;
 import com.sgav.sgav.model.Status;
 import com.sgav.sgav.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,7 +21,7 @@ public class LoginController {
     private LoginService loginService;
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping()
-    public ApiResponse loginUser(@RequestBody LoginDto loginDto) throws SQLException, IOException {
+    public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto) throws SQLException, IOException {
         return loginService.login(loginDto);
     }
 
