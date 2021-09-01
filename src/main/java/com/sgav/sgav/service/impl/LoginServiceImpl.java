@@ -30,14 +30,14 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ApiResponse login(LoginDto loginDto ) throws SQLException, IOException {
 
-        Login login = loginDao.getLogin(loginDto.getUsername().toString(),loginDto.getPassword().toString());
-        if(!login.getUsername().equals(loginDto.getUsername())){
-            return new ApiResponse(401, "usuario inexistente", null) ;
+        Login login = loginDao.getLogin(loginDto.getUsername(), loginDto.getPassword());
+        if(login.getUsername() == null){
+            return new ApiResponse(401, "usuario y/o contraseña incorrecto", null) ;
         }
-        if(!login.getPassword().equals((loginDto.getPassword()))){
+      if(!login.getPassword().equals((loginDto.getPassword()))){
             return new ApiResponse(401, "contraseña incorrecta", null) ;
         }
-
+        System.out.println("login data " + loginDto.getUsername().concat(" ").concat(loginDto.getPassword()));
         return new ApiResponse(200, "Login success", null) ;
     }
 

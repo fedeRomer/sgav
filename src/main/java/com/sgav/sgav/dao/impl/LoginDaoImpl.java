@@ -47,8 +47,8 @@ public class LoginDaoImpl implements LoginDao {
         preparedStatement.close();
         connection.close();
         //t
-        login.setUsername("test");
-        login.setPassword("test");
+       // login.setUsername("test");
+        //login.setPassword("test");
         return login;
     }
 

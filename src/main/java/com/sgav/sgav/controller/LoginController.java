@@ -18,7 +18,7 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping()
     public ApiResponse loginUser(@RequestBody LoginDto loginDto) throws SQLException, IOException {
         return loginService.login(loginDto);
