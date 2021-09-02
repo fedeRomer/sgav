@@ -11,14 +11,11 @@ import java.sql.SQLException;
 @Service
 public class LoginService  {
 
-    //@Autowired
-    LoginRepository loginRepository;
+    @Autowired
+    private LoginRepository loginRepository;
 
     @Autowired
     private LoginDao loginDao;
-
-
-
 
     public void addLogin(Login login) {
 
@@ -35,7 +32,8 @@ public class LoginService  {
         }
         //si login ok, set logged in true
         login.setLoggedIn(true);
-        //updateLoginStatus(login);
+        login.setUsuarioId(null);
+        updateLoginStatus(login);
         return new ResponseEntity<>("Login Success" + login, HttpStatus.OK);
     }
 
@@ -48,7 +46,8 @@ public class LoginService  {
     }
 
     public void updateLoginStatus(Login login){
-        loginRepository.save(login);
+      //  loginRepository.save(login);
+        Login dsa = loginRepository.save(login);
     }
 
     public ResponseEntity<String> getLoginByUsername(String username) {
