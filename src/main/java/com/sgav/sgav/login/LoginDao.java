@@ -1,6 +1,6 @@
-package com.sgav.sgav.dao;
+package com.sgav.sgav.login;
 
-import com.sgav.sgav.model.Login;
+import com.sgav.sgav.login.Login;
 
 import java.io.IOException;
 import java.sql.SQLException;

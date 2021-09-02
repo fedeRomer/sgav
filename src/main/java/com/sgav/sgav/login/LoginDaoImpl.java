@@ -1,11 +1,10 @@
-package com.sgav.sgav.dao.impl;
+package com.sgav.sgav.login;
 
-import com.sgav.sgav.dao.LoginDao;
-import com.sgav.sgav.model.Login;
+import com.sgav.sgav.login.LoginDao;
+import com.sgav.sgav.login.Login;
 import com.sgav.sgav.util.MySQL;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.sql.*;
 
@@ -61,8 +60,6 @@ public class LoginDaoImpl implements LoginDao {
 
     @Override
     public Login getLoginByUsername(String username) {
-
-
 
         return null;
     }

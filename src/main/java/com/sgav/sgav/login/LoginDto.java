@@ -1,4 +1,4 @@
-package com.sgav.sgav.dto;
+package com.sgav.sgav.login;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

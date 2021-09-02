@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
 
 @SpringBootApplication
-//@EntityScan(basePackages = {"com.sgav.sgav.model"} )
+@EntityScan(basePackageClasses = {SgavApplication.class} )
 //@EnableJpaRepositories
-@ComponentScan({"com.sgav.sgav.repository"})
+//@ComponentScan({"com.sgav.sgav.repository"})
 public class SgavApplication {
 
 	public static void main(String[] args) {
