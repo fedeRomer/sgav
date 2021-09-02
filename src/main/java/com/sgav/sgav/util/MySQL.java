@@ -39,7 +39,7 @@ public class MySQL {
     public Connection getConnection() {
         if (this.connection == null) {
             try {
-                Class.forName(this.driver);
+                //Class.forName(this.driver);
 
                 this.connection = DriverManager.getConnection(this.url, this.username, this.password);
             } catch (Exception e) {

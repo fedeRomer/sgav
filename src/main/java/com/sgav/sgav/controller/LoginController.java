@@ -6,6 +6,7 @@ import com.sgav.sgav.model.Login;
 import com.sgav.sgav.model.Status;
 import com.sgav.sgav.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +15,17 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @RestController
+@EnableAutoConfiguration
 @RequestMapping("/api/login")
 public class LoginController {
 
-    @Autowired
     private LoginService loginService;
+
+    @Autowired
+    public LoginController(LoginService loginService){
+        this.loginService=loginService;
+    }
+
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping()
     public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto) throws SQLException, IOException {
@@ -34,5 +41,10 @@ public class LoginController {
     public Status register(@Valid @RequestBody Login login){
 
         return null;
+    }
+
+    @GetMapping("/checkloginstatus")
+    public ResponseEntity<String> checkLoginStatus(@RequestBody LoginDto loginDto) throws SQLException, IOException{
+        return loginService.getLoginByUsername(loginDto.getUsername());
     }
 }

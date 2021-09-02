@@ -1,10 +1,9 @@
 package com.sgav.sgav.service.impl;
 
 import com.sgav.sgav.dao.LoginDao;
-import com.sgav.sgav.dao.impl.LoginDaoImpl;
-import com.sgav.sgav.dto.ApiResponse;
 import com.sgav.sgav.dto.LoginDto;
 import com.sgav.sgav.model.Login;
+import com.sgav.sgav.repository.LoginRepository;
 import com.sgav.sgav.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,29 +17,35 @@ import java.sql.SQLException;
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
-    private LoginDao loginDao;
+    private LoginRepository loginRepository;
 
     @Autowired
-    private LoginDaoImpl loginDaoImpl;
+    private LoginDao loginDao;
+
+
 
 
     @Override
     public void addLogin(Login login) {
 
     }
-
+ //TODO: https://spring.io/guides/tutorials/rest/
+    // https://github.com/htakemoto/spring-boot-jpa-sample/blob/fea4d0a5caf2a1c10c7431159657a183bf77f992/src/main/java/com/htakemoto/repository/ItemServiceImpl.java
     @Override
     public ResponseEntity<String> login(LoginDto loginDto ) throws SQLException, IOException {
         System.out.println("login data " + loginDto.getUsername().concat(" ").concat(loginDto.getPassword()));
         Login login = loginDao.getLogin(loginDto.getUsername(), loginDto.getPassword());
+        //cambiar de 400 a 401
         if(login.getUsername() == null){
             return new ResponseEntity<>( "usuario y/o contraseña incorrecto", HttpStatus.BAD_REQUEST);
         }
       if(!login.getPassword().equals((loginDto.getPassword()))){
           return new ResponseEntity<>( "Contraseña incorrecta", HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>("Login Success",HttpStatus.OK);
+        //si login ok, set logged in true
+        login.setLoggedIn(true);
+       updateLoginStatus(login);
+        return new ResponseEntity<>("Login Success" + login,HttpStatus.OK);
     }
 
     @Override
@@ -53,8 +58,12 @@ public class LoginServiceImpl implements LoginService {
 
     }
 
+    public void updateLoginStatus(Login login){
+        loginRepository.save(login);
+    }
+
     @Override
-    public Login getLoginByUsername(String username) {
+    public ResponseEntity<String> getLoginByUsername(String username) {
         return null;
     }
 }
