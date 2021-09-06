@@ -6,6 +6,7 @@ import com.sgav.sgav.model.Status;
 import com.sgav.sgav.login.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,23 +30,21 @@ public class LoginController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping()
     public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto) throws SQLException, IOException {
-        System.out.println("post api/login/");
         return loginService.login(loginDto);
     }
 
     @PostMapping("/logout")
-    public Status logOut(@RequestBody Login login) {
-        return Status.SUCCESS;
+    public ResponseEntity<String> logOut(@RequestBody Login login) {
+       return loginService.logout(login);
     }
 
     @PostMapping("/registration")
-    public Status register(@Valid @RequestBody Login login){
-
-        return null;
+    public ResponseEntity<String> register(@Valid @RequestBody Login login){
+        return new ResponseEntity<>("", HttpStatus.NOT_IMPLEMENTED);
     }
 
     @GetMapping("/checkloginstatus")
     public ResponseEntity<String> checkLoginStatus(@RequestBody LoginDto loginDto) throws SQLException, IOException{
-        return loginService.getLoginByUsername(loginDto.getUsername());
+        return loginService.getLoginByUsername(loginDto);
     }
 }

@@ -16,7 +16,7 @@ public interface LoginDao {
 
     void deleteLogin(Login login);
 
-    Login getLoginByUsername(String username);
+    Login getLoginByUsername(String username) throws IOException;
 
     Login getLoginByEmail(String email);
 

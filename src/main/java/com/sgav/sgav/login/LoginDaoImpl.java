@@ -1,8 +1,7 @@
 package com.sgav.sgav.login;
 
-import com.sgav.sgav.login.LoginDao;
-import com.sgav.sgav.login.Login;
 import com.sgav.sgav.util.MySQL;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -10,6 +9,9 @@ import java.sql.*;
 
 @Repository(value = "loginDao")
 public class LoginDaoImpl implements LoginDao {
+
+    @Autowired
+    LoginRepository loginRepository;
 
     private PreparedStatement preparedStatement;
     private CallableStatement callableStatement;
@@ -59,9 +61,9 @@ public class LoginDaoImpl implements LoginDao {
     }
 
     @Override
-    public Login getLoginByUsername(String username) {
-
-        return null;
+    public Login getLoginByUsername(String username) throws IOException {
+        Login l = loginRepository.findLoginByUsername(username);
+        return l;
     }
 
     @Override

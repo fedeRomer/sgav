@@ -32,9 +32,8 @@ public class LoginService  {
         }
         //si login ok, set logged in true
         login.setLoggedIn(true);
-        login.setUsuarioId(null);
         updateLoginStatus(login);
-        return new ResponseEntity<>("Login Success" + login, HttpStatus.OK);
+        return new ResponseEntity<>("Login Success " + login.getUsername(), HttpStatus.OK);
     }
 
     public void updateLogin(Login login) {
@@ -46,11 +45,42 @@ public class LoginService  {
     }
 
     public void updateLoginStatus(Login login){
-      //  loginRepository.save(login);
-        Login dsa = loginRepository.save(login);
+      loginRepository.save(login);
     }
 
-    public ResponseEntity<String> getLoginByUsername(String username) {
-        return null;
+    public ResponseEntity<String> getLoginByUsername(LoginDto loginDto) throws IOException {
+        Login l = loginDao.getLoginByUsername(loginDto.getUsername());
+        if(l == null){
+            return new ResponseEntity<>("Not Found",HttpStatus.NOT_FOUND);
+        }
+
+        if(l.getLoggedIn()){
+            return new ResponseEntity<>("Logged in", HttpStatus.OK);
+        }else if(!l.getLoggedIn()){
+            return new ResponseEntity<>("Not Logged In", HttpStatus.FORBIDDEN);
+        }else{
+            return new ResponseEntity<>("",HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    public ResponseEntity<String> logout(Login login) {
+
+        Login l = new Login();
+
+        l.setUsername(login.getUsername());
+
+        l = loginRepository.findLoginByUsername(l.getUsername());
+
+        if(l == null){
+            return new ResponseEntity<>("Not Found",HttpStatus.NOT_FOUND);
+        }
+
+        l.setLoggedIn(false);
+
+
+        loginRepository.save(l);
+
+        return new ResponseEntity<>("Logged out", HttpStatus.OK);
     }
 }
