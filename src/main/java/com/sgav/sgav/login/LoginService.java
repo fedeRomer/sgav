@@ -17,13 +17,25 @@ public class LoginService  {
     @Autowired
     private LoginDao loginDao;
 
-    public void addLogin(Login login) {
+    public ResponseEntity<String> addLogin(Login login) throws IOException {
 
+        if (login.getUsername() != null && !login.getUsername().isEmpty() && login.getPassword() != null && !login.getPassword().isEmpty()) {
+            if (loginDao.getLoginByUsername(login.getUsername()) == null) {
+                if(login.getLoggedIn() == null){
+                    login.setLoggedIn(false);
+                }
+                loginRepository.save(login);
+                return new ResponseEntity<>("Login added OK " + login.getUsername(), HttpStatus.CREATED);
+            }else{
+                return new ResponseEntity<>("Username already exist " + login.getUsername(), HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        return new ResponseEntity<>("Login failed, check username & password." + login.getUsername(), HttpStatus.BAD_REQUEST);
     }
     public ResponseEntity<String> login(LoginDto loginDto ) throws SQLException, IOException {
         System.out.println("login data " + loginDto.getUsername().concat(" ").concat(loginDto.getPassword()));
         Login login = loginDao.getLogin(loginDto.getUsername(), loginDto.getPassword());
-        //cambiar de 400 a 401
         if (login.getUsername() == null) {
             return new ResponseEntity<>("usuario y/o contraseña incorrecto", HttpStatus.BAD_REQUEST);
         }

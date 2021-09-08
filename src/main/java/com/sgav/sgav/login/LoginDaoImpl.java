@@ -38,10 +38,13 @@ public class LoginDaoImpl implements LoginDao {
         Login login = new Login();
 
         while (set.next()) {
-            login.setId(set.getInt(set.getInt("id")));
+            login.setId(set.getInt("id"));
             login.setUsername(set.getString("username"));
             login.setPassword(set.getString("password"));
             login.setUsuarioId(set.getInt("usuario_id"));
+            if(login.getUsuarioId() == 0){
+                login.setUsuarioId(null);
+            }
             login.setLoggedIn(set.getBoolean("logged_in"));
         }
         set.close();

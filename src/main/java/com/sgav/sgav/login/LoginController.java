@@ -1,12 +1,6 @@
 package com.sgav.sgav.login;
 
-import com.sgav.sgav.login.LoginDto;
-import com.sgav.sgav.login.Login;
-import com.sgav.sgav.model.Status;
-import com.sgav.sgav.login.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +10,7 @@ import java.sql.SQLException;
 
 @RestController
 //@EnableAutoConfiguration
+@CrossOrigin(origins = "http://localhost:3000") //crossOrigin va para todos los controller
 @RequestMapping("/api/login")
 public class LoginController {
 
@@ -27,7 +22,7 @@ public class LoginController {
         this.loginService=loginService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+
     @PostMapping()
     public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto) throws SQLException, IOException {
         return loginService.login(loginDto);
@@ -38,9 +33,9 @@ public class LoginController {
        return loginService.logout(login);
     }
 
-    @PostMapping("/registration")
-    public ResponseEntity<String> register(@Valid @RequestBody Login login){
-        return new ResponseEntity<>("", HttpStatus.NOT_IMPLEMENTED);
+    @PutMapping("/registration")
+    public ResponseEntity<String> register(@Valid @RequestBody Login login) throws IOException {
+        return loginService.addLogin(login);
     }
 
     @GetMapping("/checkloginstatus")
