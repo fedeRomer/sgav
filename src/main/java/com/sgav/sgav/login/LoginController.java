@@ -24,7 +24,7 @@ public class LoginController {
 
 
     @PostMapping()
-    public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto) throws SQLException, IOException {
+    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto) throws SQLException, IOException {
         return loginService.login(loginDto);
     }
 
@@ -33,9 +33,18 @@ public class LoginController {
        return loginService.logout(login);
     }
 
+    /**
+     *dar de alta primero el usuario y despues el login preferentemente, sino habra que
+     * editar el login con el id de usuario posteriormente.
+     */
     @PutMapping("/registration")
     public ResponseEntity<String> register(@Valid @RequestBody Login login) throws IOException {
         return loginService.addLogin(login);
+    }
+
+    @PostMapping("/updatelogin")
+    public ResponseEntity<?> updateLogin(@Valid @RequestBody Login login){
+        return loginService.updateLogin(login);
     }
 
     @GetMapping("/checkloginstatus")

@@ -1,5 +1,7 @@
 package com.sgav.sgav.login;
 
+import com.google.gson.Gson;
+import com.sgav.sgav.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ public class LoginService  {
     @Autowired
     private LoginDao loginDao;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public ResponseEntity<String> addLogin(Login login) throws IOException {
 
         if (login.getUsername() != null && !login.getUsername().isEmpty() && login.getPassword() != null && !login.getPassword().isEmpty()) {
@@ -33,23 +38,52 @@ public class LoginService  {
 
         return new ResponseEntity<>("Login failed, check username & password." + login.getUsername(), HttpStatus.BAD_REQUEST);
     }
-    public ResponseEntity<String> login(LoginDto loginDto ) throws SQLException, IOException {
+    public ResponseEntity<?> login(LoginDto loginDto ) throws SQLException, IOException {
         System.out.println("login data " + loginDto.getUsername().concat(" ").concat(loginDto.getPassword()));
         Login login = loginDao.getLogin(loginDto.getUsername(), loginDto.getPassword());
         if (login.getUsername() == null) {
-            return new ResponseEntity<>("usuario y/o contraseña incorrecto", HttpStatus.BAD_REQUEST);
+            //return new ResponseEntity<>("usuario y/o contraseña incorrecto", HttpStatus.BAD_REQUEST);
+            //return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("usuario y/o contraseña incorrecto");
         }
         if (!login.getPassword().equals((loginDto.getPassword()))) {
-            return new ResponseEntity<>("Contraseña incorrecta", HttpStatus.BAD_REQUEST);
+            //return new ResponseEntity<>("Contraseña incorrecta", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body("Contraseña incorrecta");
+
         }
         //si login ok, set logged in true
         login.setLoggedIn(true);
         updateLoginStatus(login);
-        return new ResponseEntity<>("Login Success " + login.getUsername(), HttpStatus.OK);
+        return new ResponseEntity<>(login, HttpStatus.OK);
     }
 
-    public void updateLogin(Login login) {
+    public  ResponseEntity<?> updateLogin(Login login) {
 
+        Login loginNew = new Login();
+        if(login.getId() == null || login.getId() ==0){
+            return new ResponseEntity<>("Debe contener el id del usuario a actualizar",HttpStatus.BAD_REQUEST);
+        }
+
+        if(login.getUsername() == null || login.getUsername().isEmpty()){
+            return new ResponseEntity<>("Debe contener el email del usuario",HttpStatus.BAD_REQUEST);
+        }
+
+        loginNew = loginRepository.getById(login.getId());
+
+        if(login.getPassword() != null && !login.getPassword().isEmpty()){
+            loginNew.setPassword(login.getPassword());
+        }
+        loginNew.setUsername(login.getUsername());
+
+        if(login.getUsuarioId() != null){
+            loginNew.setUsuarioId(login.getUsuarioId());
+        }else{
+            loginNew.setUsuarioId(null);
+        }
+
+        loginRepository.save(loginNew);
+
+        return new ResponseEntity<>(loginNew,HttpStatus.OK);
     }
 
     public void deleteLogin(Login login) {

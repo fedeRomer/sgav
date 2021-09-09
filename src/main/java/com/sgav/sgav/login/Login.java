@@ -1,5 +1,7 @@
 package com.sgav.sgav.login;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sgav.sgav.usuario.Usuario;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @NoArgsConstructor
 @Table(name = "login")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Login implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,8 +31,9 @@ public class Login implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "usuario_id")
-    private Integer usuarioId;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuarioId;
 
     @Column(name = "logged_in")
     private Boolean loggedIn;

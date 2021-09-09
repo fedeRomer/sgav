@@ -1,5 +1,7 @@
 package com.sgav.sgav.login;
 
+import com.sgav.sgav.usuario.Usuario;
+import com.sgav.sgav.usuario.UsuarioRepository;
 import com.sgav.sgav.util.MySQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,6 +14,9 @@ public class LoginDaoImpl implements LoginDao {
 
     @Autowired
     LoginRepository loginRepository;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     private PreparedStatement preparedStatement;
     private CallableStatement callableStatement;
@@ -36,15 +41,22 @@ public class LoginDaoImpl implements LoginDao {
         ResultSet set = preparedStatement.executeQuery();
 
         Login login = new Login();
+        Usuario usuario = new Usuario();
 
         while (set.next()) {
             login.setId(set.getInt("id"));
             login.setUsername(set.getString("username"));
             login.setPassword(set.getString("password"));
-            login.setUsuarioId(set.getInt("usuario_id"));
-            if(login.getUsuarioId() == 0){
+            usuario.setId(set.getInt("usuario_id"));
+
+            if(usuario.getId() == null || usuario.getId()==0){
                 login.setUsuarioId(null);
+            }else{
+                login.setUsuarioId(usuario);
+                usuario = usuarioRepository.getById(usuario.getId());
+                login.setUsuarioId(usuario);
             }
+
             login.setLoggedIn(set.getBoolean("logged_in"));
         }
         set.close();
