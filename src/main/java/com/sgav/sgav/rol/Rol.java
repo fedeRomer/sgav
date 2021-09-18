@@ -1,4 +1,4 @@
-package com.sgav.sgav.model;
+package com.sgav.sgav.rol;
 
 import lombok.Data;
 

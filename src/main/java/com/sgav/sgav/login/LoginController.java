@@ -51,4 +51,17 @@ public class LoginController {
     public ResponseEntity<String> checkLoginStatus(@RequestBody LoginDto loginDto) throws SQLException, IOException{
         return loginService.getLoginByUsername(loginDto);
     }
+
+    //TODO: do delete by id
+    @DeleteMapping("/deletelogin")
+    public ResponseEntity<?> deleteLogin(@RequestBody Login login){
+        return null;
+    }
+
+    //TODO: return all login
+    @GetMapping("/getalllogin")
+    public ResponseEntity<?> getAllLogin(){
+        return null;
+    }
+
 }
