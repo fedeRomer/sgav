@@ -1,4 +1,4 @@
-package com.sgav.sgav.model;
+package com.sgav.sgav.propietario;
 
 import lombok.Data;
 
@@ -10,8 +10,8 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "mascotas_perdidas")
-public class MascotasPerdidas implements Serializable {
+@Table(name = "propietario")
+public class Propietario implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,13 +19,10 @@ public class MascotasPerdidas implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "titulo")
-    private String titulo;
+    @Column(name = "unidad_funcional_id")
+    private Integer unidadFuncionalId;
 
-    @Column(name = "detalle")
-    private String detalle;
-
-    @Column(name = "foto")
-    private byte[] foto;
+    @Column(name = "usuario_id")
+    private Integer usuarioId;
 
 }
