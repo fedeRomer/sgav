@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface VisitanteRepository extends JpaRepository<Visitante, Integer>, JpaSpecificationExecutor<Visitante> {
 
-    @Query(value = "SELECT * FROM Visitante WHERE nombre LIKE %:string%", nativeQuery = true)
+    @Query(value = "SELECT * FROM Visitante WHERE nombre LIKE '%:string%'", nativeQuery = true)
     List<Visitante> findVisitanteByNombre(String string);
 
-    @Query(value = "SELECT * FROM Visitante WHERE apellido LIKE %:string%", nativeQuery = true)
+    @Query(value = "SELECT * FROM Visitante WHERE apellido LIKE '%:string%'", nativeQuery = true)
     List<Visitante> findVisitanteByApellido(String string);
 
     @Query(value = "SELECT * FROM Visitante  WHERE dni = ?", nativeQuery = true)

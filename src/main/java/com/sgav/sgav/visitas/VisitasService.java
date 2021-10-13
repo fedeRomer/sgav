@@ -15,6 +15,9 @@ public class VisitasService {
     @Autowired
     private VisitasRepository visitasRepository;
 
+    @Autowired
+    private HistoricoVisitasRepository historicoVisitasRepository;
+
 
     public ResponseEntity<?> getVisita(Visitas visitas) {
         Visitas v = new Visitas();
@@ -66,6 +69,16 @@ public class VisitasService {
         }
 
         visitasRepository.save(visitas);
+
+        HistoricoVisitas hv = new HistoricoVisitas();
+        hv.setAprobado(visitas.getAprobado());
+        hv.setCalendarioVisitasId(visitas.getCalendarioVisitasId());
+        hv.setFechaEntrada(visitas.getFechaEntrada());
+        hv.setUnidadFuncionalId(visitas.getUnidadFuncionalId());
+        hv.setUsuarioId(visitas.getUsuarioId());
+
+        historicoVisitasRepository.save(hv);
+
         return new ResponseEntity<>("Operación Exitosa", HttpStatus.OK);
     }
 

@@ -18,6 +18,9 @@ public class VisitanteService {
     @Autowired
     private VisitanteRepository visitanteRepository;
 
+    @Autowired
+    private HistoricoVisitanteRepository historicoVisitanteRepository;
+
     public ResponseEntity<?> getVisitante(Visitante visitante) {
         Visitante v = new Visitante();
         List<Visitante> visitanteList = new ArrayList<>();
@@ -81,9 +84,20 @@ public class VisitanteService {
             return ResponseEntity.badRequest().body("Se requiere DNI para esta operación");
         }
 
-        visitanteRepository.save(visitante);
-        return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
+        if(visitante.getUnidadFuncionalId() == null || visitante.getUnidadFuncionalId() == 0){
+            return ResponseEntity.badRequest().body("Se requiere ID unidad funcional para esta operación");
+        }
 
+        HistoricoVisitante hv = new HistoricoVisitante();
+
+        visitanteRepository.save(visitante);
+
+        hv.setNombre(visitante.getNombre());
+        hv.setApellido(visitante.getApellido());
+        hv.setDni(visitante.getDni());
+        hv.setUnidadFuncionalId(visitante.getUnidadFuncionalId());
+
+        return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
     }
 
     public ResponseEntity<?> updateVisitante(Visitante visitante) {
