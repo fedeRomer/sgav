@@ -23,7 +23,7 @@ public class VisitanteVehiculoService {
         List<VisitanteVehiculo> visitanteVehiculoList = new ArrayList<>();
         Optional<VisitanteVehiculo> repoResponse = Optional.of(new VisitanteVehiculo());
 
-        if(visitanteVehiculo.getId() != null || visitanteVehiculo.getId() != 0){
+        if(visitanteVehiculo.getId() != null && visitanteVehiculo.getId() != 0){
             vh = visitanteVehiculoRepository.getById(visitanteVehiculo.getId());
             return new ResponseEntity<>(vh, HttpStatus.OK);
         }

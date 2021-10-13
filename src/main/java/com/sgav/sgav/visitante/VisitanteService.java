@@ -26,7 +26,7 @@ public class VisitanteService {
         List<Visitante> visitanteList = new ArrayList<>();
         Optional<Visitante> repoResponse = Optional.of(new Visitante());
 
-        if(visitante.getId() != null || visitante.getId() != 0){
+        if(visitante.getId() != null && visitante.getId() != 0){
             v = visitanteRepository.getById(visitante.getId());
             return new ResponseEntity<>(v, HttpStatus.OK);
         }
@@ -41,12 +41,12 @@ public class VisitanteService {
             return new ResponseEntity<>(visitanteList, HttpStatus.OK);
         }
 
-        if(visitante.getDni() != null || visitante.getDni() != 0){
+        if(visitante.getDni() != null && visitante.getDni() != 0){
             visitanteList = visitanteRepository.findVisitanteByDni(visitante.getDni());
             return new ResponseEntity<>(visitanteList, HttpStatus.OK);
         }
 
-        if(visitante.getUnidadFuncionalId() != null || visitante.getUnidadFuncionalId() != 0){
+        if(visitante.getUnidadFuncionalId() != null && visitante.getUnidadFuncionalId() != 0){
             visitanteList = visitanteRepository.findVisitanteByUnidadFuncionalId(visitante.getUnidadFuncionalId());
             return new ResponseEntity<>(visitanteList, HttpStatus.OK);
         }

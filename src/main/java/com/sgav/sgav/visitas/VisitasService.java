@@ -24,12 +24,12 @@ public class VisitasService {
         List<Visitas> visitasList = new ArrayList<>();
         Optional<Visitas> repoResponse = Optional.of(new Visitas());
 
-        if(visitas.getId() != null || visitas.getId() != 0){
+        if(visitas.getId() != null && visitas.getId() != 0){
             repoResponse = visitasRepository.findById(visitas.getId());
             return new ResponseEntity<>(repoResponse, HttpStatus.OK);
         }
 
-        if(visitas.getUsuarioId() != null || visitas.getUsuarioId() != 0){
+        if(visitas.getUsuarioId() != null && visitas.getUsuarioId() != 0){
             //find by usuario id query
             visitasList = visitasRepository.findVisitasByUsuarioId(visitas.getUsuarioId());
             if(visitasList.isEmpty()){
@@ -38,7 +38,7 @@ public class VisitasService {
             return new ResponseEntity<>(visitasList,HttpStatus.OK);
         }
 
-        if(visitas.getUnidadFuncionalId() != null || visitas.getUnidadFuncionalId() != 0){
+        if(visitas.getUnidadFuncionalId() != null && visitas.getUnidadFuncionalId() != 0){
             //find by uf id
             visitasList = visitasRepository.findVisitasByUnidadFuncionalId(visitas.getUnidadFuncionalId());
             if(visitasList.isEmpty()){
@@ -84,7 +84,7 @@ public class VisitasService {
 
     public ResponseEntity<?> updateVisita(Visitas visitas) {
 
-        if(visitas.getId() != null || visitas.getId() != 0){
+        if(visitas.getId() != null && visitas.getId() != 0){
             visitasRepository.save(visitas);
             return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
         }else{
@@ -94,7 +94,7 @@ public class VisitasService {
 
     public ResponseEntity<?> deleteVisita(Visitas visitas) {
 
-        if(visitas.getId() != null || visitas.getId() != 0){
+        if(visitas.getId() != null && visitas.getId() != 0){
             visitasRepository.delete(visitas);
             return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
         }else{
