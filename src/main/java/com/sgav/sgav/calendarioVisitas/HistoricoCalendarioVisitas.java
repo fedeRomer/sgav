@@ -1,4 +1,4 @@
-package com.sgav.sgav.model;
+package com.sgav.sgav.calendarioVisitas;
 
 import lombok.Data;
 
@@ -11,8 +11,8 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "historico_calendario_clubhouse")
-public class HistoricoCalendarioClubhouse implements Serializable {
+@Table(name = "historico_calendario_visitas")
+public class HistoricoCalendarioVisitas implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,8 +20,8 @@ public class HistoricoCalendarioClubhouse implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "propietario_id")
-    private Integer propietarioId;
+    @Column(name = "visitas_id")
+    private Integer visitasId;
 
     @Column(name = "fecha")
     private Date fecha;

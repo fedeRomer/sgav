@@ -1,4 +1,4 @@
-package com.sgav.sgav.model;
+package com.sgav.sgav.calendarioClubhouse;
 
 import lombok.Data;
 
@@ -11,8 +11,8 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "calendario_clubhouse")
-public class CalendarioClubhouse implements Serializable {
+@Table(name = "historico_calendario_clubhouse")
+public class HistoricoCalendarioClubhouse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
