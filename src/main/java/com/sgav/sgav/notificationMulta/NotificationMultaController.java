@@ -25,7 +25,7 @@ public class NotificationMultaController {
     }
 
     @GetMapping("/getall")
-    public ResponseEntity<?> getAllNotification(@RequestBody NotificationMulta notificationMulta){
+    public ResponseEntity<?> getAllNotification(){
         return notificationMultaService.getAllNotifications();
     }
 

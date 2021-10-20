@@ -25,7 +25,7 @@ public class NotificationExpensaController {
     }
 
     @GetMapping("/getall")
-    public ResponseEntity<?> getAllNotification(@RequestBody NotificationExpensa notificationExpensa){
+    public ResponseEntity<?> getAllNotification(){
         return notificationExpensaService.getAllNotifications();
     }
 
