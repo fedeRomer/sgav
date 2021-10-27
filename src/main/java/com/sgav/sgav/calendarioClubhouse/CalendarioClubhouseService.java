@@ -73,7 +73,7 @@ public class CalendarioClubhouseService {
         if(calendarioClubhouse.getDuracionhs() != null){
             hcb.setDuracionhs(calendarioClubhouse.getDuracionhs());
         }
-
+        clubhouseRepository.save(calendarioClubhouse);
         historicoCalendarioClubhouseRepository.save(hcb);
         return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
     }

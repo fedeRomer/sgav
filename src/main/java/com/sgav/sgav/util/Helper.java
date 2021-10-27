@@ -16,13 +16,16 @@ public class Helper {
     }
 
     public static boolean isValidStringWithNumbers(String str){
-        return str.matches("[a-zA-Z0-9]*");
+        Pattern pattern = Pattern.compile("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)" );
+        Matcher matcher = pattern.matcher(str);
+        //return matcher.matches();
+        return true;
     }
 
     public static boolean isValidPhoneNumber(String str) {
         Pattern pattern = Pattern.compile("^\\d{15}$");
         Matcher matcher = pattern.matcher(str);
-        return matcher.matches();
+        return true;
     }
 
 

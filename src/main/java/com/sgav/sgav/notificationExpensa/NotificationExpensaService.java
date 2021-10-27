@@ -62,6 +62,11 @@ public class NotificationExpensaService {
             }
         }
 
+        if(notificationExpensa.getMontoTotal() != null){
+            if(notificationExpensa.getMontoTotal().signum() < 0){
+                return ResponseEntity.badRequest().body("la multa debe ser 0 o mayor");
+            }
+        }
 
 
         if(!Helper.isNullOrEmpty(notificationExpensa.getTipo())){
@@ -100,6 +105,11 @@ public class NotificationExpensaService {
             return  ResponseEntity.badRequest().body("Se requiere id de unidad funcional o del propietario");
         }
 
+        if(notificationExpensa.getMontoTotal() != null){
+            if(notificationExpensa.getMontoTotal().signum() < 0){
+                return ResponseEntity.badRequest().body("la multa debe ser 0 o mayor");
+            }
+        }
 
         if(!Helper.isValidStringWithNumbers(notificationExpensa.getTitulo())){
             return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");

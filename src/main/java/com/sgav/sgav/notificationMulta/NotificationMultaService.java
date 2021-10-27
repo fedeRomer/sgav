@@ -59,6 +59,11 @@ public class NotificationMultaService {
             }
         }
 
+        if(notificationMulta.getMontoTotal() != null){
+            if(notificationMulta.getMontoTotal().signum() < 0){
+                return ResponseEntity.badRequest().body("la multa debe ser 0 o mayor");
+            }
+        }
 
         if(!Helper.isNullOrEmpty(notificationMulta.getTipo())){
             if(!Helper.isValidStringWithNumbers(notificationMulta.getTipo())){
@@ -92,6 +97,12 @@ public class NotificationMultaService {
         }
         if(notificationMulta.getUnidadFuncionalId() == null || notificationMulta.getPropietarioId() == null){
             return  ResponseEntity.badRequest().body("Se requiere id de unidad funcional o del propietario");
+        }
+
+        if(notificationMulta.getMontoTotal() != null){
+            if(notificationMulta.getMontoTotal().signum() < 0){
+                return ResponseEntity.badRequest().body("la multa debe ser 0 o mayor");
+            }
         }
 
 

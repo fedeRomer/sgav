@@ -20,25 +20,31 @@ public class UsuarioController {
 
     //add
     @PutMapping("/addusuario")
-    public ResponseEntity<String> addUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<?> addUsuario(@RequestBody Usuario usuario){
         return usuarioService.addUsuario(usuario);
     }
 
     //delete
     @DeleteMapping("/deleteusuario")
-    public ResponseEntity<String> deleteUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<?> deleteUsuario(@RequestBody Usuario usuario){
         return usuarioService.deleteUsuario(usuario);
     }
 
     //update
-    @PatchMapping("/updateusuario")
-    public ResponseEntity<String> updateUsuario(@RequestBody Usuario usuario){
+    @PostMapping("/updateusuario")
+    public ResponseEntity<?> updateUsuario(@RequestBody Usuario usuario){
         return usuarioService.updateUsuario(usuario);
     }
 
     //get
     @GetMapping("/getusuario")
-    public ResponseEntity<String> getUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<?> getUsuario(@RequestBody Usuario usuario){
         return usuarioService.getUsuario(usuario);
+    }
+
+    //getall
+    @GetMapping("/getall")
+    public ResponseEntity<?> getUsuario(){
+        return usuarioService.getAllUsuario();
     }
 }

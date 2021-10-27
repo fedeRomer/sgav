@@ -27,4 +27,5 @@ public class CalendarioVisitas implements Serializable {
     @Column(name = "tipo")
     private String tipo;
 
+
 }
