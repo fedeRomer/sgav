@@ -1,5 +1,6 @@
 package com.sgav.sgav.calendarioVisitas;
 
+import com.sgav.sgav.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,18 @@ public class CalendarioVisitasService {
             return ResponseEntity.badRequest().body("Se requiere TIPO para esta operación");
         }
 
+        if(calendarioVisitas.getDuracionhs() != null){
+            if(calendarioVisitas.getDuracionhs() <0){
+                return ResponseEntity.badRequest().body("la duración debe ser 0 o mayor a 0");
+            }
+        }
+
+        if(!Helper.isNullOrEmpty(calendarioVisitas.getTipo())){
+            if(!Helper.isValidName(calendarioVisitas.getTipo())){
+                return ResponseEntity.badRequest().body("No se permiten caracteres especiales en este campo");
+            }
+        }
+
 
         calendarioVisitasRepository.save(calendarioVisitas);
 
@@ -70,6 +83,18 @@ public class CalendarioVisitasService {
 
         if(calendarioVisitas.getId() == null || calendarioVisitas.getId() == 0){
             return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+        }
+
+        if(calendarioVisitas.getDuracionhs() != null){
+            if(calendarioVisitas.getDuracionhs() <0){
+                return ResponseEntity.badRequest().body("la duración debe ser 0 o mayor a 0");
+            }
+        }
+
+        if(!Helper.isNullOrEmpty(calendarioVisitas.getTipo())){
+            if(!Helper.isValidName(calendarioVisitas.getTipo())){
+                return ResponseEntity.badRequest().body("No se permiten caracteres especiales en este campo");
+            }
         }
 
         calendarioVisitasRepository.save(calendarioVisitas);

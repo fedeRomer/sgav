@@ -2,10 +2,7 @@ package com.sgav.sgav.notificationMulta;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -18,6 +15,7 @@ public class NotificationMulta implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "titulo")
@@ -30,10 +28,7 @@ public class NotificationMulta implements Serializable {
     private String detalle;
 
     @Column(name = "monto_total")
-    private String montoTotal;
-
-    @Column(name = "notification_multacol")
-    private BigDecimal notificationMultacol;
+    private BigDecimal montoTotal;
 
     @Column(name = "unidad_funcional_id")
     private Integer unidadFuncionalId;

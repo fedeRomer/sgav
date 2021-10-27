@@ -1,5 +1,6 @@
 package com.sgav.sgav.notificationMulta;
 
+import com.sgav.sgav.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,20 @@ public class NotificationMultaService {
             return ResponseEntity.badRequest().body("Se necesita el ID de la notificacion para modificar");
         }
 
+        if(!Helper.isNullOrEmpty(notificationMulta.getTitulo())){
+            if(!Helper.isValidStringWithNumbers(notificationMulta.getTitulo())){
+                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+            }
+        }
+
+
+        if(!Helper.isNullOrEmpty(notificationMulta.getTipo())){
+            if(!Helper.isValidStringWithNumbers(notificationMulta.getTipo())){
+                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+            }
+        }
+
+
         notificationMultaRepository.save(notificationMulta);
         return new ResponseEntity<>("Notificacion actualizada", HttpStatus.OK);
     }
@@ -78,6 +93,12 @@ public class NotificationMultaService {
         if(notificationMulta.getUnidadFuncionalId() == null || notificationMulta.getPropietarioId() == null){
             return  ResponseEntity.badRequest().body("Se requiere id de unidad funcional o del propietario");
         }
+
+
+        if(!Helper.isValidStringWithNumbers(notificationMulta.getTitulo())){
+            return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+        }
+
 
         notificationMultaRepository.save(notificationMulta);
 

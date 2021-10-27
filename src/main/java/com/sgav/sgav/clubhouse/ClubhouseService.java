@@ -1,9 +1,11 @@
 package com.sgav.sgav.clubhouse;
 
+import com.sgav.sgav.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +48,20 @@ public class ClubhouseService {
     }
 
     public ResponseEntity<?> addClubhouse(Clubhouse clubhouse) {
-
         if(clubhouse.getNombre().isEmpty()) {
             return ResponseEntity.badRequest().body("Nombre faltante");
         }
 
+       if(!Helper.isValidName(clubhouse.getNombre())){
+           return ResponseEntity.badRequest().body("Nombre incorrecto, el nombre debe contener letras unicamente");
+       }
+
         if(clubhouse.getDetalle().isEmpty()) {
             return ResponseEntity.badRequest().body("Detalle faltante");
+        }else{
+            if(!Helper.isValidStringWithNumbers(clubhouse.getDetalle())){
+                return ResponseEntity.badRequest().body("Detalle no valido, no se permiten caracteres especiales. solo letras y numeros");
+            }
         }
 
         clubhouseRepository.save(clubhouse);
@@ -64,6 +73,13 @@ public class ClubhouseService {
         if(clubhouse.getId() == null || clubhouse.getId() == 0){
             return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
         }
+
+        if(!clubhouse.getNombre().isEmpty()) {
+            if(!Helper.isValidName(clubhouse.getNombre())){
+                return ResponseEntity.badRequest().body("Nombre incorrecto, el nombre debe contener letras unicamente");
+            }
+        }
+
         clubhouseRepository.save(clubhouse);
         return new ResponseEntity<>("clubhouse actualizado exitosamente", HttpStatus.OK);
     }

@@ -2,10 +2,7 @@ package com.sgav.sgav.unidadFuncional;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -17,10 +14,8 @@ public class UnidadFuncional implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(name = "propietario_id")
-    private Integer propietarioId;
 
     @Column(name = "numero_uf")
     private Integer numeroUf;

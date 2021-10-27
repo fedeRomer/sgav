@@ -1,5 +1,6 @@
 package com.sgav.sgav.calendarioClubhouse;
 
+import com.sgav.sgav.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ public class CalendarioClubhouseService {
 
     @Autowired
     private  HistoricoCalendarioClubhouseRepository historicoCalendarioClubhouseRepository;
+
+
 
     public ResponseEntity<?> getCalendarioClubhouse(CalendarioClubhouse calendarioClubhouse) {
         CalendarioClubhouse cb = new CalendarioClubhouse();
@@ -50,7 +53,19 @@ public class CalendarioClubhouseService {
             return ResponseEntity.badRequest().body("Se requiere TIPO para esta operación");
         }
 
-        clubhouseRepository.save(calendarioClubhouse);
+        if(calendarioClubhouse.getDuracionhs() != null){
+            if(calendarioClubhouse.getDuracionhs() <0){
+                return ResponseEntity.badRequest().body("la duración debe ser 0 o mayor a 0");
+            }
+        }
+
+
+        if(!Helper.isNullOrEmpty(calendarioClubhouse.getTipo())){
+            if(!Helper.isValidName(calendarioClubhouse.getTipo())){
+                return ResponseEntity.badRequest().body("No se permiten caracteres especiales en este campo");
+            }
+        }
+
 
         HistoricoCalendarioClubhouse hcb = new HistoricoCalendarioClubhouse();
         hcb.setFecha(calendarioClubhouse.getFecha());
@@ -67,6 +82,19 @@ public class CalendarioClubhouseService {
 
         if(calendarioClubhouse.getId() == null || calendarioClubhouse.getId() == 0){
             return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+        }
+
+        if(calendarioClubhouse.getDuracionhs() != null){
+            if(calendarioClubhouse.getDuracionhs() <0){
+                return ResponseEntity.badRequest().body("la duración debe ser 0 o mayor a 0");
+            }
+        }
+
+
+        if(!Helper.isNullOrEmpty(calendarioClubhouse.getTipo())){
+            if(!Helper.isValidName(calendarioClubhouse.getTipo())){
+                return ResponseEntity.badRequest().body("No se permiten caracteres especiales en este campo");
+            }
         }
 
         clubhouseRepository.save(calendarioClubhouse);

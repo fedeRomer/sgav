@@ -1,5 +1,6 @@
 package com.sgav.sgav.unidadFuncional;
 
+import com.sgav.sgav.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +57,10 @@ public class UnidadFuncionalService {
         }
         if (unidadFuncional.getDireccion().isEmpty()) {
             return ResponseEntity.badRequest().body("La dirección no debe estar vacia");
+        }else{
+            if(!Helper.isValidStringWithNumbers(unidadFuncional.getDireccion())){
+                return ResponseEntity.badRequest().body("La dirección debe tener letras y numeros");
+            }
         }
         if (unidadFuncional.getTelefono().isEmpty()) {
             return ResponseEntity.badRequest().body("El telefono no debe estar vacio");
@@ -69,6 +74,18 @@ public class UnidadFuncionalService {
 
         if (unidadFuncional.getId() == null || unidadFuncional.getId() == 0) {
             return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+        }
+
+        if(!Helper.isNullOrEmpty(unidadFuncional.getDireccion())){
+            if(!Helper.isValidStringWithNumbers(unidadFuncional.getDireccion())){
+                return ResponseEntity.badRequest().body("La dirección debe tener letras y numeros");
+            }
+        }
+        if(!Helper.isNullOrEmpty(unidadFuncional.getTelefono())){
+            if(!Helper.isValidStringWithNumbers(unidadFuncional.getTelefono())){
+                return ResponseEntity.badRequest().body("El telefono no es valido, maximo 13 digitos, " +
+                        "sin letras ni especios ni caracteres especiales");
+            }
         }
 
         unidadFuncionalRepository.save(unidadFuncional);

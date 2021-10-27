@@ -1,5 +1,6 @@
 package com.sgav.sgav.visitanteVehiculo;
 
+import com.sgav.sgav.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,10 @@ public class VisitanteVehiculoService {
 
         if(visitanteVehiculo.getPatente().isEmpty()){
             return ResponseEntity.badRequest().body("Se requiere Patente para esta operación");
+        }else{
+            if(!Helper.isValidStringWithNumbers(visitanteVehiculo.getPatente())){
+                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros");
+            }
         }
 
         if(visitanteVehiculo.getFechaVencimientoPoliza() == null){
@@ -68,6 +73,12 @@ public class VisitanteVehiculoService {
 
         if(visitanteVehiculo.getId() == null || visitanteVehiculo.getId() == 0){
             return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+        }
+
+        if(!visitanteVehiculo.getPatente().isEmpty()){
+            if(!Helper.isValidStringWithNumbers(visitanteVehiculo.getPatente())){
+                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros");
+            }
         }
 
         visitanteVehiculoRepository.save(visitanteVehiculo);

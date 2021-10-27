@@ -1,5 +1,6 @@
 package com.sgav.sgav.mascotasPerdidas;
 
+import com.sgav.sgav.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,9 +61,18 @@ public class MascotasPerdidasService {
 
         if(mascotasPerdidas.getTitulo().isEmpty() || mascotasPerdidas.getTitulo() == null){
             return ResponseEntity.badRequest().body("Titulo faltante");
+        }else{
+            if(!Helper.isValidStringWithNumbers(mascotasPerdidas.getTitulo())){
+                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+            }
         }
+
         if (mascotasPerdidas.getDetalle().isEmpty() || mascotasPerdidas.getDetalle() == null){
             return ResponseEntity.badRequest().body("Detalle faltante");
+        }else{
+            if(!Helper.isValidStringWithNumbers(mascotasPerdidas.getDetalle())){
+                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+            }
         }
         if(mascotasPerdidas.getEncontrado() == null){
             mascotasPerdidas.setEncontrado(false);
@@ -76,6 +86,21 @@ public class MascotasPerdidasService {
 
         if(mascotasPerdidas.getId() == null || mascotasPerdidas.getId() == 0){
             return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+        }
+
+        if(!Helper.isNullOrEmpty(mascotasPerdidas.getTitulo())){
+           if(!Helper.isValidStringWithNumbers(mascotasPerdidas.getTitulo())){
+                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+            }
+        }
+
+        if(!Helper.isNullOrEmpty(mascotasPerdidas.getDetalle())){
+          if(!Helper.isValidStringWithNumbers(mascotasPerdidas.getDetalle())){
+                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+            }
+        }
+        if(mascotasPerdidas.getEncontrado() == null){
+            mascotasPerdidas.setEncontrado(false);
         }
 
         mascotasPerdidasRepository.save(mascotasPerdidas);
