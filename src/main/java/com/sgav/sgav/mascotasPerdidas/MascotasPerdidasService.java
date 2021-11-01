@@ -1,6 +1,7 @@
 package com.sgav.sgav.mascotasPerdidas;
 
 import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ public class MascotasPerdidasService {
 
     @Autowired
     private MascotasPerdidasRepository mascotasPerdidasRepository;
+
+    ResponseCustom responseCustom = new ResponseCustom();
 
     public ResponseEntity<?> getMascota(MascotasPerdidas mascotasPerdidas) {
 
@@ -60,18 +63,22 @@ public class MascotasPerdidasService {
     public ResponseEntity<?> addMascotaPerdida(MascotasPerdidas mascotasPerdidas) {
 
         if(mascotasPerdidas.getTitulo().isEmpty() || mascotasPerdidas.getTitulo() == null){
-            return ResponseEntity.badRequest().body("Titulo faltante");
+            responseCustom.setResponse("Titulo faltante");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }else{
             if(!Helper.isValidStringWithNumbers(mascotasPerdidas.getTitulo())){
-                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+                responseCustom.setResponse("Solo se permiten letras y numeros en este campo");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if (mascotasPerdidas.getDetalle().isEmpty() || mascotasPerdidas.getDetalle() == null){
-            return ResponseEntity.badRequest().body("Detalle faltante");
+            responseCustom.setResponse("Detalle faltante");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }else{
             if(!Helper.isValidStringWithNumbers(mascotasPerdidas.getDetalle())){
-                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+                responseCustom.setResponse("Solo se permiten letras y numeros en este campo");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
         if(mascotasPerdidas.getEncontrado() == null){
@@ -85,18 +92,21 @@ public class MascotasPerdidasService {
     public ResponseEntity<?> updateMascotaPerdida(MascotasPerdidas mascotasPerdidas) {
 
         if(mascotasPerdidas.getId() == null || mascotasPerdidas.getId() == 0){
-            return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+            responseCustom.setResponse("Se requiere ID para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         if(!Helper.isNullOrEmpty(mascotasPerdidas.getTitulo())){
            if(!Helper.isValidStringWithNumbers(mascotasPerdidas.getTitulo())){
-                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+               responseCustom.setResponse("Solo se permiten letras y numeros en este campo");
+               return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(!Helper.isNullOrEmpty(mascotasPerdidas.getDetalle())){
           if(!Helper.isValidStringWithNumbers(mascotasPerdidas.getDetalle())){
-                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+              responseCustom.setResponse("Solo se permiten letras y numeros en este campo");
+              return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
         if(mascotasPerdidas.getEncontrado() == null){
@@ -110,7 +120,8 @@ public class MascotasPerdidasService {
     public ResponseEntity<?> deleteMascotaPerdida(MascotasPerdidas mascotasPerdidas) {
 
         if(mascotasPerdidas.getId() == null || mascotasPerdidas.getId() == 0){
-            return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+            responseCustom.setResponse("Se requiere ID para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         mascotasPerdidasRepository.delete(mascotasPerdidas);

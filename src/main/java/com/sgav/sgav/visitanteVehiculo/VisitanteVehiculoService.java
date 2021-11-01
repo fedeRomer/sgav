@@ -1,6 +1,7 @@
 package com.sgav.sgav.visitanteVehiculo;
 
 import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ public class VisitanteVehiculoService {
 
     @Autowired
     private VisitanteVehiculoRepository visitanteVehiculoRepository;
+
+    ResponseCustom responseCustom = new ResponseCustom();
 
 
     public ResponseEntity<?> getVisitanteVehiculo(VisitanteVehiculo visitanteVehiculo) {
@@ -54,15 +57,18 @@ public class VisitanteVehiculoService {
     public ResponseEntity<?> addVisitanteVehiculo(VisitanteVehiculo visitanteVehiculo) {
 
         if(visitanteVehiculo.getPatente().isEmpty()){
-            return ResponseEntity.badRequest().body("Se requiere Patente para esta operación");
+            responseCustom.setResponse("Se requiere Patente para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }else{
             if(!Helper.isValidStringWithNumbers(visitanteVehiculo.getPatente())){
-                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros");
+                responseCustom.setResponse("Solo se permiten letras y numeros");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(visitanteVehiculo.getFechaVencimientoPoliza() == null){
-            return ResponseEntity.badRequest().body("Se requiere fecha de vencimiento de poliza para esta operación");
+            responseCustom.setResponse("Se requiere fecha de vencimiento de poliza para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         visitanteVehiculoRepository.save(visitanteVehiculo);
@@ -72,12 +78,14 @@ public class VisitanteVehiculoService {
     public ResponseEntity<?> updateVisitanteVehiculo(VisitanteVehiculo visitanteVehiculo) {
 
         if(visitanteVehiculo.getId() == null || visitanteVehiculo.getId() == 0){
-            return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+            responseCustom.setResponse("Se requiere ID para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         if(!visitanteVehiculo.getPatente().isEmpty()){
             if(!Helper.isValidStringWithNumbers(visitanteVehiculo.getPatente())){
-                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros");
+                responseCustom.setResponse("Solo se permiten letras y numeros");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -88,7 +96,8 @@ public class VisitanteVehiculoService {
     public ResponseEntity<?> deleteVisitanteVehiculo(VisitanteVehiculo visitanteVehiculo) {
 
         if(visitanteVehiculo.getId() == null || visitanteVehiculo.getId() == 0){
-            return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+            responseCustom.setResponse("Se requiere ID para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         visitanteVehiculoRepository.deleteById(visitanteVehiculo.getId());

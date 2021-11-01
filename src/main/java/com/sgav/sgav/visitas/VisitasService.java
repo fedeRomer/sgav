@@ -1,5 +1,6 @@
 package com.sgav.sgav.visitas;
 
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class VisitasService {
     @Autowired
     private HistoricoVisitasRepository historicoVisitasRepository;
 
+    ResponseCustom responseCustom = new ResponseCustom();
 
     public ResponseEntity<?> getVisita(Visitas visitas) {
         Visitas v = new Visitas();
@@ -65,7 +67,8 @@ public class VisitasService {
     public ResponseEntity<?> addVisita(Visitas visitas) {
 
         if(visitas.getUnidadFuncionalId() == null || visitas.getUnidadFuncionalId() == 0) {
-            return ResponseEntity.badRequest().body("Se requiere el ID unidad funcional para esta operación");
+            responseCustom.setResponse("Se requiere el ID unidad funcional para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         visitasRepository.save(visitas);
@@ -88,7 +91,8 @@ public class VisitasService {
             visitasRepository.save(visitas);
             return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("se requiere id de visita para realizar esta operación", HttpStatus.OK);
+            responseCustom.setResponse("se requiere id de visita para realizar esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -98,7 +102,8 @@ public class VisitasService {
             visitasRepository.delete(visitas);
             return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("se requiere id de visita para realizar esta operación", HttpStatus.OK);
+            responseCustom.setResponse("se requiere id de visita para realizar esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
     }
 }

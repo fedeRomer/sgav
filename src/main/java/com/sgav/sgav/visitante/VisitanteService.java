@@ -1,6 +1,7 @@
 package com.sgav.sgav.visitante;
 
 import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ public class VisitanteService {
 
     @Autowired
     private HistoricoVisitanteRepository historicoVisitanteRepository;
+
+    ResponseCustom responseCustom = new ResponseCustom();
 
     public ResponseEntity<?> getVisitante(Visitante visitante) {
         Visitante v = new Visitante();
@@ -71,31 +74,38 @@ public class VisitanteService {
     public ResponseEntity<?> addVisitante(Visitante visitante) {
 
         if(visitante.getNombre().isEmpty()){
-            return ResponseEntity.badRequest().body("Se requiere Nombre para esta operación");
+            responseCustom.setResponse("Se requiere Nombre para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }else{
             if(!Helper.isValidStringWithNumbers(visitante.getNombre())){
-                return ResponseEntity.badRequest().body("El nombre no es valido, no se permiten caracteres especiales");
+                responseCustom.setResponse("El nombre no es valido, no se permiten caracteres especiales");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(visitante.getApellido().isEmpty()){
-            return ResponseEntity.badRequest().body("Se requiere Apellido para esta operación");
+            responseCustom.setResponse("Se requiere Apellido para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }else{
             if(!Helper.isValidStringWithNumbers(visitante.getApellido())){
-                return ResponseEntity.badRequest().body("El Apellido no es valido, no se permiten caracteres especiales");
+                responseCustom.setResponse("El Apellido no es valido, no se permiten caracteres especiales");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(visitante.getDni() == null || visitante.getDni() == 0){
-            return ResponseEntity.badRequest().body("Se requiere DNI para esta operación");
+            responseCustom.setResponse("Se requiere DNI para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }else{
             if(visitante.getDni() <= 0){
-                return ResponseEntity.badRequest().body("Se requiere DNI valido para esta operación");
+                responseCustom.setResponse("Se requiere DNI valido para esta operación");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(visitante.getUnidadFuncionalId() == null || visitante.getUnidadFuncionalId() <= 0){
-            return ResponseEntity.badRequest().body("Se requiere ID unidad funcional para esta operación");
+            responseCustom.setResponse("Se requiere ID unidad funcional para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         HistoricoVisitante hv = new HistoricoVisitante();
@@ -113,24 +123,28 @@ public class VisitanteService {
     public ResponseEntity<?> updateVisitante(Visitante visitante) {
 
         if(visitante.getId() == null || visitante.getId() ==0){
-            return ResponseEntity.badRequest().body("Se requiere ID de visitante para esta operación");
+            responseCustom.setResponse("Se requiere ID de visitante para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         if(!visitante.getNombre().isEmpty()){
             if(!Helper.isValidStringWithNumbers(visitante.getNombre())){
-                return ResponseEntity.badRequest().body("El nombre no es valido, no se permiten caracteres especiales");
+                responseCustom.setResponse("El nombre no es valido, no se permiten caracteres especiales");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(!visitante.getApellido().isEmpty()){
               if(!Helper.isValidStringWithNumbers(visitante.getApellido())){
-                return ResponseEntity.badRequest().body("El Apellido no es valido, no se permiten caracteres especiales");
+                  responseCustom.setResponse("El Apellido no es valido, no se permiten caracteres especiales");
+                  return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(visitante.getDni() != null){
             if(visitante.getDni() <= 0){
-                return ResponseEntity.badRequest().body("Se requiere DNI valido para esta operación");
+                responseCustom.setResponse("Se requiere DNI valido para esta operación");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -141,7 +155,8 @@ public class VisitanteService {
     public ResponseEntity<?> deleteVisitante(Visitante visitante) {
 
         if(visitante.getId() == null || visitante.getId() ==0){
-            return ResponseEntity.badRequest().body("Se requiere ID de visitante para esta operación");
+            responseCustom.setResponse("Se requiere ID de visitante para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         visitanteRepository.delete(visitante);

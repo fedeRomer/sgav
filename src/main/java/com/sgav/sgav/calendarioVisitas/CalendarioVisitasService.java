@@ -1,6 +1,7 @@
 package com.sgav.sgav.calendarioVisitas;
 
 import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ public class CalendarioVisitasService {
     @Autowired
     private HistoricoCalendarioVisitasRepository historicoCalendarioVisitasRepository;
 
+    ResponseCustom responseCustom = new ResponseCustom();
+
     public ResponseEntity<?> getCalendarioVisitas(CalendarioVisitas calendarioVisitas) {
         CalendarioVisitas cv = new CalendarioVisitas();
         List<CalendarioVisitas> calendarioVisitasList = new ArrayList<>();
@@ -27,7 +30,8 @@ public class CalendarioVisitasService {
             return new ResponseEntity<>(cv, HttpStatus.OK);
         }
 
-        return ResponseEntity.badRequest().body("Se requiere id para esta operación");
+        responseCustom.setResponse("Se requiere id para esta operación");
+        return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<?> getAllCalendarioVisitas() {
@@ -36,7 +40,8 @@ public class CalendarioVisitasService {
         calendarioVisitasList = calendarioVisitasRepository.findAll();
 
         if(calendarioVisitasList.isEmpty()){
-            return ResponseEntity.badRequest().body("No se encontraron resultados");
+            responseCustom.setResponse("No se encontraron resultados");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(calendarioVisitasList, HttpStatus.OK);
@@ -45,22 +50,26 @@ public class CalendarioVisitasService {
     public ResponseEntity<?> addCalendarioVisitas(CalendarioVisitas calendarioVisitas) {
 
         if(calendarioVisitas.getFecha() == null){
-            return ResponseEntity.badRequest().body("Se requiere fecha para esta operación");
+            responseCustom.setResponse("Se requiere fecha para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
-        if(calendarioVisitas.getTipo().isEmpty()){
-            return ResponseEntity.badRequest().body("Se requiere TIPO para esta operación");
+        if(calendarioVisitas.getTipo() == null || calendarioVisitas.getTipo().isEmpty()){
+            responseCustom.setResponse("Se requiere TIPO para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         if(calendarioVisitas.getDuracionhs() != null){
             if(calendarioVisitas.getDuracionhs() <0){
-                return ResponseEntity.badRequest().body("la duración debe ser 0 o mayor a 0");
+                responseCustom.setResponse("la duración debe ser 0 o mayor a 0");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(!Helper.isNullOrEmpty(calendarioVisitas.getTipo())){
             if(!Helper.isValidName(calendarioVisitas.getTipo())){
-                return ResponseEntity.badRequest().body("No se permiten caracteres especiales en este campo");
+                responseCustom.setResponse("No se permiten caracteres especiales en este campo");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -82,18 +91,21 @@ public class CalendarioVisitasService {
     public ResponseEntity<?> updateCalendarioVisitas(CalendarioVisitas calendarioVisitas) {
 
         if(calendarioVisitas.getId() == null || calendarioVisitas.getId() == 0){
-            return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+            responseCustom.setResponse("Se requiere ID para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         if(calendarioVisitas.getDuracionhs() != null){
             if(calendarioVisitas.getDuracionhs() <0){
-                return ResponseEntity.badRequest().body("la duración debe ser 0 o mayor a 0");
+                responseCustom.setResponse("la duración debe ser 0 o mayor a 0");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(!Helper.isNullOrEmpty(calendarioVisitas.getTipo())){
             if(!Helper.isValidName(calendarioVisitas.getTipo())){
-                return ResponseEntity.badRequest().body("No se permiten caracteres especiales en este campo");
+                responseCustom.setResponse("No se permiten caracteres especiales en este campo");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -104,7 +116,8 @@ public class CalendarioVisitasService {
     public ResponseEntity<?> deleteCalendarioVisitas(CalendarioVisitas calendarioVisitas) {
 
         if(calendarioVisitas.getId() == null || calendarioVisitas.getId() == 0){
-            return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+            responseCustom.setResponse("Se requiere ID para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         calendarioVisitasRepository.deleteById(calendarioVisitas.getId());

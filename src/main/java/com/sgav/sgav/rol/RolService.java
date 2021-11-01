@@ -1,6 +1,7 @@
 package com.sgav.sgav.rol;
 
 import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ public class RolService {
     @Autowired
     private RolDao rolDao;
 
+    ResponseCustom responseCustom = new ResponseCustom();
+
     public ResponseEntity<?> getAll() {
         List<Rol> rolList = new ArrayList<>();
 
@@ -34,17 +37,21 @@ public class RolService {
     public ResponseEntity<?> addRol(Rol rol){
 
         if(rol.getRol().isEmpty() || rol.getRol() == null){
-            return ResponseEntity.badRequest().body("Falta el rol");
+            responseCustom.setResponse("Falta el rol");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }else{
             if(!Helper.isValidName(rol.getRol())){
-                return ResponseEntity.badRequest().body("El rol no puede tener caracteres especiales, numeros o espacio");
+                responseCustom.setResponse("El rol no puede tener caracteres especiales, numeros o espacio");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
         if(rol.getDetalle().isEmpty() || rol.getDetalle() == null){
-            return ResponseEntity.badRequest().body("Falta el detalle");
+            responseCustom.setResponse("Falta el detalle");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }else{
             if(!Helper.isValidStringWithNumbers(rol.getDetalle())){
-                return ResponseEntity.badRequest().body("No se permiten caracteres especiales en este campo");
+                responseCustom.setResponse("No se permiten caracteres especiales en este campo");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -56,7 +63,8 @@ public class RolService {
     public ResponseEntity<?> deleteRol(Rol rol){
 
         if(rol.getId() == null){
-            return ResponseEntity.badRequest().body("Falta el id a eliminar");
+            responseCustom.setResponse("Falta el id a eliminar");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         rolRepository.delete(rol);
@@ -67,22 +75,24 @@ public class RolService {
     public ResponseEntity<?> modifyRol(Rol rol){
 
         if(rol.getId() == null){
-            return ResponseEntity.badRequest().body("falta el id");
+            responseCustom.setResponse("falta el id");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         if(!Helper.isNullOrEmpty(rol.getRol())){
             if(!Helper.isValidName(rol.getRol())){
-                return ResponseEntity.badRequest().body("El rol no puede tener caracteres especiales, numeros o espacio");
+                responseCustom.setResponse("El rol no puede tener caracteres especiales, numeros o espacio");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
         if(!Helper.isNullOrEmpty(rol.getDetalle())){
             if(!Helper.isValidName(rol.getDetalle())){
-                return ResponseEntity.badRequest().body("El detalle no puede tener caracteres especiales, numeros o espacio");
+                responseCustom.setResponse("El detalle no puede tener caracteres especiales, numeros o espacio");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         rolRepository.save(rol);
-
         return new ResponseEntity<String>("Modificación exitosa", HttpStatus.OK);
     }
 }

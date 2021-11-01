@@ -1,5 +1,6 @@
 package com.sgav.sgav.unidadFuncional;
 
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,8 @@ public class UnidadFuncionalController {
 
     @Autowired
     private UnidadFuncionalService unidadFuncionalService;
+
+
 
     @Autowired
     public UnidadFuncionalController(UnidadFuncionalService unidadFuncionalService){

@@ -1,6 +1,7 @@
 package com.sgav.sgav.unidadFuncional;
 
 import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ public class UnidadFuncionalService {
 
     @Autowired
     private UnidadFuncionalRepository unidadFuncionalRepository;
+
+    ResponseCustom responseCustom = new ResponseCustom();
 
     public ResponseEntity<?> getUnidadFuncional(UnidadFuncional unidadFuncional) {
 
@@ -45,7 +48,8 @@ public class UnidadFuncionalService {
         unidadFuncionalList = unidadFuncionalRepository.findAll();
 
         if (unidadFuncionalList.isEmpty()) {
-            return ResponseEntity.badRequest().body("no results");
+            responseCustom.setResponse("No se encontraron resultados");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(unidadFuncionalList, HttpStatus.OK);
     }
@@ -53,52 +57,62 @@ public class UnidadFuncionalService {
     public ResponseEntity<?> addUnidadFuncional(UnidadFuncional unidadFuncional) {
 
         if (unidadFuncional.getNumeroUf() == null || unidadFuncional.getNumeroUf() == 0) {
-            return ResponseEntity.badRequest().body("Numero de unidad funcional no debe estar vacio o ser 0");
+            responseCustom.setResponse("Numero de unidad funcional no debe estar vacio o ser 0");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
-        if (unidadFuncional.getDireccion().isEmpty()) {
-            return ResponseEntity.badRequest().body("La dirección no debe estar vacia");
+        if (unidadFuncional.getDireccion() == null || unidadFuncional.getDireccion().isEmpty()) {
+            responseCustom.setResponse("La dirección no debe estar vacia");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }else{
             if(!Helper.isValidStringWithNumbers(unidadFuncional.getDireccion())){
-                return ResponseEntity.badRequest().body("La dirección debe tener letras y numeros");
+                responseCustom.setResponse("La dirección debe tener letras y numeros");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
-        if (unidadFuncional.getTelefono().isEmpty()) {
-            return ResponseEntity.badRequest().body("El telefono no debe estar vacio");
+        if (unidadFuncional.getTelefono() == null || unidadFuncional.getTelefono().isEmpty()) {
+            responseCustom.setResponse("El telefono no debe estar vacio");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         unidadFuncionalRepository.save(unidadFuncional);
-        return new ResponseEntity<>("Unidad funcional añadida exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("Unidad funcional añadida exitosamente");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> updateUnidadFuncional(UnidadFuncional unidadFuncional) {
 
         if (unidadFuncional.getId() == null || unidadFuncional.getId() == 0) {
-            return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+            responseCustom.setResponse("Se requiere ID para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         if(!Helper.isNullOrEmpty(unidadFuncional.getDireccion())){
             if(!Helper.isValidStringWithNumbers(unidadFuncional.getDireccion())){
-                return ResponseEntity.badRequest().body("La dirección debe tener letras y numeros");
+                responseCustom.setResponse("La dirección debe tener letras y numeros");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
         if(!Helper.isNullOrEmpty(unidadFuncional.getTelefono())){
             if(!Helper.isValidStringWithNumbers(unidadFuncional.getTelefono())){
-                return ResponseEntity.badRequest().body("El telefono no es valido, maximo 13 digitos, " +
-                        "sin letras ni especios ni caracteres especiales");
+                responseCustom.setResponse("El telefono no es valido, maximo 13 digitos, sin letras ni especios ni caracteres especiales");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         unidadFuncionalRepository.save(unidadFuncional);
-        return new ResponseEntity<>("Unidad funcional actualizada exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("Unidad funcional actualizada exitosamente");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteUnidadFuncional(UnidadFuncional unidadFuncional) {
 
         if (unidadFuncional.getId() == null || unidadFuncional.getId() == 0) {
-            return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+            responseCustom.setResponse("Se requiere ID para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         unidadFuncionalRepository.delete(unidadFuncional);
-        return new ResponseEntity<>("Unidad funcional eliminada exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("Unidad funcional eliminada exitosamente");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 }

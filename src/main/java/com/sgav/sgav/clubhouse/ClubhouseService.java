@@ -1,6 +1,7 @@
 package com.sgav.sgav.clubhouse;
 
 import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ public class ClubhouseService {
     @Autowired
     private ClubhouseRepository clubhouseRepository;
 
+    ResponseCustom responseCustom = new ResponseCustom();
+
     public ResponseEntity<?> getClubhouse(Clubhouse clubhouse) {
         Clubhouse c = new Clubhouse();
         Optional<Clubhouse> repoResponse = Optional.of(new Clubhouse());
@@ -27,7 +30,8 @@ public class ClubhouseService {
                   return new ResponseEntity<>(c, HttpStatus.OK);
               }
             }else{
-                return ResponseEntity.badRequest().body("Se requiere ID o Nombre para esta operación");
+                responseCustom.setResponse("Se requiere ID o Nombre para esta operación");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
         repoResponse = clubhouseRepository.findById(clubhouse.getId());
@@ -41,26 +45,31 @@ public class ClubhouseService {
 
         clubhouseList = clubhouseRepository.findAll();
         if(clubhouseList.isEmpty()){
-            return ResponseEntity.badRequest().body("No se encontraron resultados");
+            responseCustom.setResponse("No se encontraron resultados");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(clubhouseList, HttpStatus.OK);
     }
 
     public ResponseEntity<?> addClubhouse(Clubhouse clubhouse) {
-        if(clubhouse.getNombre().isEmpty()) {
-            return ResponseEntity.badRequest().body("Nombre faltante");
+        if(clubhouse.getNombre() == null || clubhouse.getNombre().isEmpty()) {
+            responseCustom.setResponse("Nombre faltante");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
        if(!Helper.isValidName(clubhouse.getNombre())){
-           return ResponseEntity.badRequest().body("Nombre incorrecto, el nombre debe contener letras unicamente");
+           responseCustom.setResponse("Nombre incorrecto, el nombre debe contener letras unicamente");
+           return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
        }
 
-        if(clubhouse.getDetalle().isEmpty()) {
-            return ResponseEntity.badRequest().body("Detalle faltante");
+        if(clubhouse.getDetalle() == null || clubhouse.getDetalle().isEmpty()) {
+            responseCustom.setResponse("Detalle faltante");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }else{
             if(!Helper.isValidStringWithNumbers(clubhouse.getDetalle())){
-                return ResponseEntity.badRequest().body("Detalle no valido, no se permiten caracteres especiales. solo letras y numeros");
+                responseCustom.setResponse("Detalle no valido, no se permiten caracteres especiales. solo letras y numeros");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -71,12 +80,14 @@ public class ClubhouseService {
     public ResponseEntity<?> updateClubhouse(Clubhouse clubhouse) {
 
         if(clubhouse.getId() == null || clubhouse.getId() == 0){
-            return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+            responseCustom.setResponse("Se requiere ID para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
-        if(!clubhouse.getNombre().isEmpty()) {
+        if(clubhouse.getNombre() != null && !clubhouse.getNombre().isEmpty()) {
             if(!Helper.isValidName(clubhouse.getNombre())){
-                return ResponseEntity.badRequest().body("Nombre incorrecto, el nombre debe contener letras unicamente");
+                responseCustom.setResponse("Nombre incorrecto, el nombre debe contener letras unicamente");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -87,7 +98,8 @@ public class ClubhouseService {
     public ResponseEntity<?> deleteClubhouse(Clubhouse clubhouse) {
 
         if(clubhouse.getId() == null || clubhouse.getId() == 0){
-            return ResponseEntity.badRequest().body("Se requiere ID para esta operación");
+            responseCustom.setResponse("Se requiere ID para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
         clubhouseRepository.deleteById(clubhouse.getId());
         return new ResponseEntity<>("clubhouse eliminado exitosamente", HttpStatus.OK);

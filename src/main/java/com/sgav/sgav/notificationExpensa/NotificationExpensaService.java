@@ -1,6 +1,7 @@
 package com.sgav.sgav.notificationExpensa;
 
 import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ public class NotificationExpensaService {
 
     @Autowired
     private NotificationExpensaDao notificationExpensaDao;
+
+    ResponseCustom responseCustom = new ResponseCustom();
 
 
     public ResponseEntity<?> getNotificationExpensa(NotificationExpensa notificationExpensa) {
@@ -54,24 +57,28 @@ public class NotificationExpensaService {
     public ResponseEntity<?> updateNotificationStatus(NotificationExpensa notificationExpensa){
 
         if(notificationExpensa.getId() == null){
-            return ResponseEntity.badRequest().body("Se necesita el ID de la notificacion para modificar");
+            responseCustom.setResponse("Se necesita el ID de la notificacion para modificar");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
         if(!Helper.isNullOrEmpty(notificationExpensa.getTitulo())){
             if(!Helper.isValidStringWithNumbers(notificationExpensa.getTitulo())){
-                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo, titulo");
+                responseCustom.setResponse("Solo se permiten letras y numeros en este campo, titulo");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(notificationExpensa.getMontoTotal() != null){
             if(notificationExpensa.getMontoTotal().signum() < 0){
-                return ResponseEntity.badRequest().body("la multa debe ser 0 o mayor");
+                responseCustom.setResponse("la multa debe ser 0 o mayor");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
 
         if(!Helper.isNullOrEmpty(notificationExpensa.getTipo())){
             if(!Helper.isValidStringWithNumbers(notificationExpensa.getTipo())){
-                return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+                responseCustom.setResponse("Solo se permiten letras y numeros en este campo");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -85,7 +92,8 @@ public class NotificationExpensaService {
 
 
         if(notificationExpensa.getId() == null){
-            return ResponseEntity.badRequest().body("Se requiere el ID de la notificación a eliminar");
+            responseCustom.setResponse("Se requiere el ID de la notificación a eliminar");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         notificationExpensaRepository.delete(notificationExpensa);
@@ -96,23 +104,28 @@ public class NotificationExpensaService {
     public ResponseEntity<?> addNotification(NotificationExpensa notificationExpensa){
 
         if(notificationExpensa.getTitulo() == null){
-            return ResponseEntity.badRequest().body("Titulo faltante");
+            responseCustom.setResponse("Titulo faltante");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
         if(notificationExpensa.getDetalle() == null){
-            return ResponseEntity.badRequest().body("Detalle faltante");
+            responseCustom.setResponse("Detalle faltante");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
         if(notificationExpensa.getUnidadFuncionalId() == null || notificationExpensa.getPropietarioId() == null){
-            return  ResponseEntity.badRequest().body("Se requiere id de unidad funcional o del propietario");
+            responseCustom.setResponse("Se requiere id de unidad funcional o del propietario");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
         if(notificationExpensa.getMontoTotal() != null){
             if(notificationExpensa.getMontoTotal().signum() < 0){
-                return ResponseEntity.badRequest().body("la multa debe ser 0 o mayor");
+                responseCustom.setResponse("la multa debe ser 0 o mayor");
+                return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
         }
 
         if(!Helper.isValidStringWithNumbers(notificationExpensa.getTitulo())){
-            return ResponseEntity.badRequest().body("Solo se permiten letras y numeros en este campo");
+            responseCustom.setResponse("Solo se permiten letras y numeros en este campo");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
 

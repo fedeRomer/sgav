@@ -47,4 +47,5 @@ public class UsuarioController {
     public ResponseEntity<?> getUsuario(){
         return usuarioService.getAllUsuario();
     }
+
 }

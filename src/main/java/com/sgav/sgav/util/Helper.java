@@ -12,20 +12,32 @@ public class Helper {
     }
 
     public static boolean isValidName(String str){
-        return str.matches("[a-zA-Z]+");
+        //Pattern pattern = Pattern.compile("^[\\p{L} .'-]+$"); //palabras con espacios
+        //Pattern pattern = Pattern.compile("^[ A-Za-z]+$");
+        Pattern pattern = Pattern.compile("^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}");
+        Matcher matcher = pattern.matcher(str);
+        return matcher.matches();
     }
 
     public static boolean isValidStringWithNumbers(String str){
-        Pattern pattern = Pattern.compile("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)" );
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$" );
         Matcher matcher = pattern.matcher(str);
-        //return matcher.matches();
-        return true;
+        return matcher.matches();
     }
 
     public static boolean isValidPhoneNumber(String str) {
-        Pattern pattern = Pattern.compile("^\\d{15}$");
+        Pattern pattern = Pattern.compile("^\\d{9,}");
         Matcher matcher = pattern.matcher(str);
-        return true;
+        return matcher.matches();
+    }
+
+    public static boolean isValidDNI(int dni) {
+        String stringDNI = String.valueOf(dni);
+        if(stringDNI.length() >= 7 && stringDNI.length() <9){
+            return false;
+        }else{
+            return true;
+        }
     }
 
 
