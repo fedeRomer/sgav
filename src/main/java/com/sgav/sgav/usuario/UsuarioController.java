@@ -48,4 +48,9 @@ public class UsuarioController {
         return usuarioService.getAllUsuario();
     }
 
+    @PostMapping("/checkaccess")
+    public ResponseEntity<?> checkAccess(@RequestBody CheckAccess checkAccess){
+        return usuarioService.checkAccess(checkAccess);
+    }
+
 }

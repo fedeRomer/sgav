@@ -1,6 +1,7 @@
 package com.sgav.sgav.usuario;
 
 import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.PermisosUsuarios;
 import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -137,4 +138,19 @@ public class UsuarioService {
         return new ResponseEntity<>(usuarioList, HttpStatus.OK);
     }
 
+
+    public ResponseEntity<?> checkAccess(CheckAccess checkAccess) {
+
+        if(Helper.isNullOrEmpty(checkAccess.typeOfUser)){
+            responseCustom.setResponse("no autorizado");
+            return new ResponseEntity<>(responseCustom, HttpStatus.UNAUTHORIZED);
+        }
+
+        if(PermisosUsuarios.checkUserPermissions(checkAccess.getTypeOfUser(), checkAccess.getModuleToAccess())){
+            return new ResponseEntity<>("Ok", HttpStatus.OK);
+        }else{
+            responseCustom.setResponse("no autorizado");
+            return new ResponseEntity<>(responseCustom, HttpStatus.UNAUTHORIZED);
+        }
+    }
 }
