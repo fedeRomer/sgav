@@ -44,7 +44,7 @@ public class Helper {
     public static boolean isValidPatente(String patente){
         patente = patente.toLowerCase();
         Pattern patternViejo = Pattern.compile("[a-z]{3}[\\d]{3}");
-        Pattern patternNuevo = Pattern.compile("[a-z]{2}[\\d]{2}[a-z]{2}");
+        Pattern patternNuevo = Pattern.compile("[a-z]{2}[\\d]{3}[a-z]{2}");
 
         Matcher matcherPatenteVieja = patternViejo.matcher(patente);
         Matcher matcherPatenteNueva = patternNuevo.matcher(patente);

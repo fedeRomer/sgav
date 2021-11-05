@@ -47,7 +47,8 @@ public class VisitanteVehiculoService {
 
         visitanteVehiculos = visitanteVehiculoRepository.findAll();
         if(visitanteVehiculos.isEmpty()){
-            return ResponseEntity.badRequest().body("No se encontraron resultados");
+            responseCustom.setResponse("No se encontraron resultados");
+            return new ResponseEntity<>(responseCustom, HttpStatus.OK);
         }
         return new ResponseEntity<>(visitanteVehiculos, HttpStatus.OK);
     }
@@ -91,7 +92,8 @@ public class VisitanteVehiculoService {
         }
 
         visitanteVehiculoRepository.save(visitanteVehiculo);
-        return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> updateVisitanteVehiculo(VisitanteVehiculo visitanteVehiculo) {
