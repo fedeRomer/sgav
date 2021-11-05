@@ -8,4 +8,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>, JpaS
 
     @Query(value = "SELECT * FROM usuario WHERE nombre=? AND apellido=?", nativeQuery = true)
     Usuario findUsuarioByNombreAndApellido(String nombre,String apellido);
+
 }

@@ -1,5 +1,10 @@
 package com.sgav.sgav.unidadFuncional;
 
+import com.sgav.sgav.login.Login;
+import com.sgav.sgav.login.LoginRepository;
+import com.sgav.sgav.propietario.Propietario;
+import com.sgav.sgav.propietario.PropietarioRepository;
+import com.sgav.sgav.usuario.Usuario;
 import com.sgav.sgav.util.Helper;
 import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,13 @@ public class UnidadFuncionalService {
 
     @Autowired
     private UnidadFuncionalRepository unidadFuncionalRepository;
+
+    @Autowired
+    private LoginRepository loginRepository;
+
+    @Autowired
+    private PropietarioRepository propietarioRepository;
+
 
     ResponseCustom responseCustom = new ResponseCustom();
 
@@ -114,5 +126,25 @@ public class UnidadFuncionalService {
         unidadFuncionalRepository.delete(unidadFuncional);
         responseCustom.setResponse("Unidad funcional eliminada exitosamente");
         return new ResponseEntity<>(responseCustom, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getAllUnidadFuncionalByUsuario(Login logRequest) {
+
+        Login login = new Login();
+        Propietario propietario = new Propietario();
+        Optional<UnidadFuncional> unidadFuncional = Optional.of(new UnidadFuncional());
+
+        try {
+
+            login = loginRepository.findLoginByUsername(logRequest.getUsername());
+            propietario = propietarioRepository.findPropietarioByUsuarioId(login.getUsuarioId().getId());
+            unidadFuncional = unidadFuncionalRepository.findById(propietario.getUnidadFuncionalId());
+
+        } catch (Exception e) {
+            responseCustom.setResponse("Se produjo un error al buscar el usuario");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>("t", HttpStatus.NOT_IMPLEMENTED);
     }
 }

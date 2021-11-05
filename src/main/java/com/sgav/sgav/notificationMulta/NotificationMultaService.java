@@ -80,7 +80,8 @@ public class NotificationMultaService {
 
 
         notificationMultaRepository.save(notificationMulta);
-        return new ResponseEntity<>("Notificacion actualizada", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteNotification(NotificationMulta notificationMulta){
@@ -92,7 +93,8 @@ public class NotificationMultaService {
 
         notificationMultaRepository.delete(notificationMulta);
 
-        return new ResponseEntity<String>("Eliminación exitosa", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> addNotification(NotificationMulta notificationMulta){
@@ -125,6 +127,7 @@ public class NotificationMultaService {
 
         notificationMultaRepository.save(notificationMulta);
 
-        return new ResponseEntity<>("Notificación añadida exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 }

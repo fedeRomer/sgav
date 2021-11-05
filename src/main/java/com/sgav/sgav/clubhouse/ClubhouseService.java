@@ -74,7 +74,8 @@ public class ClubhouseService {
         }
 
         clubhouseRepository.save(clubhouse);
-        return new ResponseEntity<>("Clubhouse añadido exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("Clubhouse añadido exitosamente");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> updateClubhouse(Clubhouse clubhouse) {
@@ -92,7 +93,8 @@ public class ClubhouseService {
         }
 
         clubhouseRepository.save(clubhouse);
-        return new ResponseEntity<>("clubhouse actualizado exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("clubhouse actualizado exitosamente");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteClubhouse(Clubhouse clubhouse) {
@@ -102,6 +104,7 @@ public class ClubhouseService {
             return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
         clubhouseRepository.deleteById(clubhouse.getId());
-        return new ResponseEntity<>("clubhouse eliminado exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("clubhouse eliminado exitosamente");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 }

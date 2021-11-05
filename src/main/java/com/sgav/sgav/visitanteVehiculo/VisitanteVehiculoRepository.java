@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface VisitanteVehiculoRepository extends JpaRepository<VisitanteVehiculo, Integer>, JpaSpecificationExecutor<VisitanteVehiculo> {
 
-    @Query(value = "SELECT * FROM visitante_vehiculo WHERE patente LIKE '%:string%'", nativeQuery = true)
-    List<VisitanteVehiculo> findVisitanteVehiculoByPatente(String string);
+    @Query(value = "SELECT * FROM visitante_vehiculo WHERE patente = ?", nativeQuery = true)
+    VisitanteVehiculo findVisitanteVehiculoByPatente(String patente);
 }

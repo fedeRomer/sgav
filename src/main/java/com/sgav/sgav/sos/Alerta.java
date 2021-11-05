@@ -23,6 +23,12 @@ public class Alerta implements Serializable {
     @Column(name = "unidad_funcional")
     private String unidadFuncional;
 
+    @Column(name = "usuario")
+    private String usuario;
+
+    @Column(name = "is_active")
+    private Boolean isactive;
+
     @Column(name = "informacion")
     private String informacion;
 

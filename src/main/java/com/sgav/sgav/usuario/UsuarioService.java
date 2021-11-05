@@ -112,7 +112,8 @@ public class UsuarioService {
         }
 
         usuarioRepository.save(usuario);
-        return new ResponseEntity<>("usuario actualizado", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteUsuario(Usuario usuario){
@@ -122,7 +123,8 @@ public class UsuarioService {
             return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
         usuarioRepository.delete(usuario);
-        return new ResponseEntity<>("usuario eliminado", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
 

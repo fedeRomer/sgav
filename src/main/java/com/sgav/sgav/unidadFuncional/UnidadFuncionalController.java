@@ -1,5 +1,7 @@
 package com.sgav.sgav.unidadFuncional;
 
+import com.sgav.sgav.login.Login;
+import com.sgav.sgav.usuario.Usuario;
 import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,11 @@ public class UnidadFuncionalController {
     @Autowired
     public UnidadFuncionalController(UnidadFuncionalService unidadFuncionalService){
         this.unidadFuncionalService=unidadFuncionalService;
+    }
+
+    @PostMapping("/getallufbyusuario")
+    public ResponseEntity<?> getAllUnidadFuncionalByUsuario(@RequestBody Login login){
+        return unidadFuncionalService.getAllUnidadFuncionalByUsuario(login);
     }
 
     @GetMapping()

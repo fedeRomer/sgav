@@ -86,7 +86,8 @@ public class MascotasPerdidasService {
         }
 
         mascotasPerdidasRepository.save(mascotasPerdidas);
-        return new ResponseEntity<>("Mascota añadida exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> updateMascotaPerdida(MascotasPerdidas mascotasPerdidas) {
@@ -114,7 +115,8 @@ public class MascotasPerdidasService {
         }
 
         mascotasPerdidasRepository.save(mascotasPerdidas);
-        return new ResponseEntity<>("Mascota actualizada exitosamente",HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteMascotaPerdida(MascotasPerdidas mascotasPerdidas) {
@@ -125,6 +127,7 @@ public class MascotasPerdidasService {
         }
 
         mascotasPerdidasRepository.delete(mascotasPerdidas);
-        return new ResponseEntity<>("Mascota eliminada exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 }

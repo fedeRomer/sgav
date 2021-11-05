@@ -121,6 +121,7 @@ public class CalendarioVisitasService {
         }
 
         calendarioVisitasRepository.deleteById(calendarioVisitas.getId());
-        return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 }

@@ -108,7 +108,8 @@ public class CalendarioClubhouseService {
         }
 
         clubhouseRepository.save(calendarioClubhouse);
-        return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteCalendarioClubhouse(CalendarioClubhouse calendarioClubhouse) {
@@ -119,6 +120,7 @@ public class CalendarioClubhouseService {
         }
 
         clubhouseRepository.deleteById(calendarioClubhouse.getId());
-        return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 }

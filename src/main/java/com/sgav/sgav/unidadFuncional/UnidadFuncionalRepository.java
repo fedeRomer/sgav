@@ -8,4 +8,8 @@ public interface UnidadFuncionalRepository extends JpaRepository<UnidadFuncional
 
     @Query(value = "SELECT * FROM unidad_funcional WHERE numero_uf = ?", nativeQuery = true)
     UnidadFuncional findUnidadFuncionalByNumeroUf(Integer numero_uf);
+
+    @Query(value = "SELECT * FROM unidad_funcional WHERE id = ?", nativeQuery = true)
+    UnidadFuncional findAllUnidadFuncionalById(Integer id);
+
 }

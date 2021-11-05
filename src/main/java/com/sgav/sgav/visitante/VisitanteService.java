@@ -149,7 +149,8 @@ public class VisitanteService {
         }
 
         visitanteRepository.save(visitante);
-        return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteVisitante(Visitante visitante) {
@@ -160,6 +161,7 @@ public class VisitanteService {
         }
 
         visitanteRepository.delete(visitante);
-        return new ResponseEntity<>("Operación exitosa", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 }

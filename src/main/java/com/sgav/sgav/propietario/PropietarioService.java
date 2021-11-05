@@ -57,7 +57,8 @@ public class PropietarioService {
         }
 
         propietarioRepository.save(propietario);
-        return new ResponseEntity<>("Propietario añadido exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> updatePropietario(Propietario propietario) {

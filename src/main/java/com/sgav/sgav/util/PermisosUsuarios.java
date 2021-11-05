@@ -8,7 +8,7 @@ public class PermisosUsuarios {
 
         moduleToAccess = moduleToAccess.replace("/","");
         moduleToAccess = moduleToAccess.toLowerCase();
-
+        Boolean hasAccess = false;
         if (typeOfUser.equalsIgnoreCase("admin") || typeOfUser.equalsIgnoreCase("propietario")) {
             return true;
         }
@@ -32,19 +32,22 @@ public class PermisosUsuarios {
 
         if (typeOfUser.equalsIgnoreCase("guardia")) {
 
+
             switch (moduleToAccess) {
                 case "chat":
-                case "moduloUsuario":
-                case "mascotasPerdidas":
-                case "sos":
+                case "modulousuario":
+                case "mascotasperdidas":
+                case "sosguardia":
                 case "visitas":
-                    return true;
+                    hasAccess = true;
+                    break;
                 default:
-                    return false;
+                    hasAccess = false;
+                    break;
             }
         }
 
 
-        return false;
+        return hasAccess;
     }
 }

@@ -57,7 +57,8 @@ public class RolService {
 
         rolRepository.save(rol);
 
-        return new ResponseEntity<String>("añadido exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteRol(Rol rol){
@@ -69,7 +70,8 @@ public class RolService {
 
         rolRepository.delete(rol);
 
-        return new ResponseEntity<String>("Eliminación exitosa", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> modifyRol(Rol rol){

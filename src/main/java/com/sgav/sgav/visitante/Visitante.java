@@ -42,9 +42,6 @@ public class Visitante implements Serializable {
     @Column(name = "visitas_id")
     private Integer visitasId;
 
-    @Column(name = "vehiculo_id")
-    private Integer vehiculoId;
-
     @Column(name = "foto")
     private byte[] foto;
 

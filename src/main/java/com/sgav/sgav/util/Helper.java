@@ -1,5 +1,6 @@
 package com.sgav.sgav.util;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,10 +34,27 @@ public class Helper {
 
     public static boolean isValidDNI(int dni) {
         String stringDNI = String.valueOf(dni);
-        if(stringDNI.length() >= 7 && stringDNI.length() <9){
-            return false;
-        }else{
+        if(stringDNI.length() >= 7 && stringDNI.length() <= 9){
             return true;
+        }else{
+            return false;
+        }
+    }
+
+    public static boolean isValidPatente(String patente){
+        patente = patente.toLowerCase();
+        Pattern patternViejo = Pattern.compile("[a-z]{3}[\\d]{3}");
+        Pattern patternNuevo = Pattern.compile("[a-z]{2}[\\d]{2}[a-z]{2}");
+
+        Matcher matcherPatenteVieja = patternViejo.matcher(patente);
+        Matcher matcherPatenteNueva = patternNuevo.matcher(patente);
+
+        if(matcherPatenteVieja.matches()){
+            return true;
+        }else if(matcherPatenteNueva.matches()){
+            return true;
+        }else{
+            return false;
         }
     }
 

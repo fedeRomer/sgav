@@ -1,5 +1,13 @@
 package com.sgav.sgav.sos;
 
+import com.sgav.sgav.login.Login;
+import com.sgav.sgav.login.LoginRepository;
+import com.sgav.sgav.propietario.Propietario;
+import com.sgav.sgav.propietario.PropietarioRepository;
+import com.sgav.sgav.unidadFuncional.UnidadFuncional;
+import com.sgav.sgav.unidadFuncional.UnidadFuncionalRepository;
+import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,12 +15,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AlertaService {
 
     @Autowired
     private AlertaRepository alertaRepository;
+
+    @Autowired
+    private LoginRepository loginRepository;
+
+    @Autowired
+    private PropietarioRepository propietarioRepository;
+
+    @Autowired
+    private UnidadFuncionalRepository unidadFuncionalRepository;
+
+    ResponseCustom responseCustom = new ResponseCustom();
 
     public ResponseEntity<?> getAlerta(Alerta alerta) {
         List<Alerta> alertaList = new ArrayList<>();
@@ -46,13 +66,29 @@ public class AlertaService {
 
     public ResponseEntity<?> addAlerta(Alerta alerta) {
 
-        if(alerta.getUnidadFuncional().isEmpty()){
-            return ResponseEntity.badRequest().body("Se requiere numero de unidad funcional");
+        if(alerta.getTipo().isEmpty()){
+            responseCustom.setResponse("Se requiere tipo de alerta");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
-        if(alerta.getTipo().isEmpty()){
-            return ResponseEntity.badRequest().body("Se requiere tipo de alerta");
+        if(Helper.isNullOrEmpty(alerta.getUsuario())){
+            responseCustom.setResponse("se requiere usuario para esta operación");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
+
+        Login login = new Login();
+        Propietario propietario = new Propietario();
+        Optional<UnidadFuncional> unidadFuncional = Optional.of(new UnidadFuncional());
+        try {
+            login = loginRepository.findLoginByUsername(alerta.getUsuario());
+            propietario = propietarioRepository.findPropietarioByUsuarioId(login.getUsuarioId().getId());
+            unidadFuncional = unidadFuncionalRepository.findById(propietario.getUnidadFuncionalId());
+            alerta.setUnidadFuncional(String.valueOf(unidadFuncional.get().getNumeroUf()));
+        } catch (Exception e) {
+            responseCustom.setResponse("Se produjo un error al buscar el usuario");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
+        }
+
 
         alertaRepository.save(alerta);
         return new ResponseEntity<String>("Operación exitosa", HttpStatus.OK);
@@ -76,5 +112,19 @@ public class AlertaService {
 
         alertaRepository.deleteById(alerta.getId());
         return new ResponseEntity<>("Alerta eliminada exitosamente", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getAllActiveAlerts() {
+        List<Alerta> alertaList = new ArrayList<>();
+
+        try{
+            alertaList = alertaRepository.findAllActiveAlertas();
+
+        }catch (Exception e){
+            responseCustom.setResponse("ocurrió un error en la busqueda de alertas");
+            return new ResponseEntity<>(responseCustom, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(alertaList, HttpStatus.OK);
     }
 }

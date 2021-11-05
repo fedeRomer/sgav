@@ -28,16 +28,20 @@ public class AlertaController {
         return alertaService.getAllAlertas();
     }
 
-    @PutMapping("/addalerta")
+    @PostMapping("/addalerta")
     public ResponseEntity<?> addAlerta(@RequestBody Alerta alerta){
         return alertaService.addAlerta(alerta);
     }
 
-    @PostMapping("/updatealerta")
+    @PutMapping("/updatealerta")
     public ResponseEntity<?> updateAlerta(@RequestBody Alerta alerta){
         return alertaService.updateAlerta(alerta);
     }
 
+    @PostMapping("/getallactivealerts")
+    public ResponseEntity<?> getAllActiveAlerts(){
+        return alertaService.getAllActiveAlerts();
+    }
     @DeleteMapping("/deletealerta")
     public ResponseEntity<?> deleteAlerta(@RequestBody Alerta alerta){
         return alertaService.deleteAlerta(alerta);

@@ -84,7 +84,8 @@ public class NotificationExpensaService {
 
         notificationExpensaRepository.save(notificationExpensa);
 
-        return new ResponseEntity<>("Notificacion actualizada", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
 
@@ -98,7 +99,8 @@ public class NotificationExpensaService {
 
         notificationExpensaRepository.delete(notificationExpensa);
 
-        return new ResponseEntity<String>("Eliminación exitosa", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> addNotification(NotificationExpensa notificationExpensa){
@@ -131,7 +133,8 @@ public class NotificationExpensaService {
 
         notificationExpensaRepository.save(notificationExpensa);
 
-        return new ResponseEntity<>("Notificación añadida exitosamente", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
 }

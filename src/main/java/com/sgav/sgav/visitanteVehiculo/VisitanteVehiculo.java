@@ -24,5 +24,11 @@ public class VisitanteVehiculo implements Serializable {
     @Column(name = "fecha_vencimiento_poliza")
     private Date fechaVencimientoPoliza;
 
+    @Column(name = "fk_visitante_owner")
+    private int fkVisitanteOwner;
+
+    @Column(name = "dni_visitante_owner")
+    private int dniVisitanteOwner;
+
 
 }

@@ -82,7 +82,8 @@ public class VisitasService {
 
         historicoVisitasRepository.save(hv);
 
-        return new ResponseEntity<>("Operación Exitosa", HttpStatus.OK);
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
     }
 
     public ResponseEntity<?> updateVisita(Visitas visitas) {
