@@ -1,10 +1,18 @@
 package com.sgav.sgav.util;
 
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class PermisosUsuarios {
 
     public static boolean checkUserPermissions(String typeOfUser, String moduleToAccess) {
+
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        }catch(Exception e){
+
+        }
+
 
         moduleToAccess = moduleToAccess.replace("/","");
         moduleToAccess = moduleToAccess.toLowerCase();

@@ -42,6 +42,11 @@ public class UsuarioController {
         return usuarioService.getUsuario(usuario);
     }
 
+    @PostMapping("/getusuariobyid")
+    public ResponseEntity<?> getUsuarioById(@RequestBody Usuario usuario){
+        return usuarioService.getUsuarioById(usuario);
+    }
+
     //getall
     @GetMapping("/getall")
     public ResponseEntity<?> getUsuario(){

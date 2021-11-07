@@ -38,12 +38,12 @@ public class LoginController {
      * editar el login con el id de usuario posteriormente.
      */
     @PutMapping("/registration")
-    public ResponseEntity<String> register(@Valid @RequestBody Login login) throws IOException {
+    public ResponseEntity<?> register(@RequestBody LoginDto login) throws IOException {
         return loginService.addLogin(login);
     }
 
     @PostMapping("/updatelogin")
-    public ResponseEntity<?> updateLogin(@Valid @RequestBody Login login){
+    public ResponseEntity<?> updateLogin(@RequestBody Login login){
         return loginService.updateLogin(login);
     }
 
@@ -52,16 +52,14 @@ public class LoginController {
         return loginService.getLoginByUsername(loginDto);
     }
 
-    //TODO: do delete by id
     @DeleteMapping("/deletelogin")
     public ResponseEntity<?> deleteLogin(@RequestBody Login login){
-        return null;
+        return loginService.deleteLogin(login);
     }
 
-    //TODO: return all login
-    @GetMapping("/getalllogin")
+    @PostMapping("/getalllogin")
     public ResponseEntity<?> getAllLogin(){
-        return null;
+        return loginService.getAllLogin();
     }
 
 }

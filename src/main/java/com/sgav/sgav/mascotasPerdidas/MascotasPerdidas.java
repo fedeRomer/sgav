@@ -27,7 +27,8 @@ public class MascotasPerdidas implements Serializable {
     @Column(name = "id_propietario")
     private Integer idPropietario;
 
+    //se guarda ruta absoluta
     @Column(name = "foto")
-    private byte[] foto;
+    private String foto;
 
 }

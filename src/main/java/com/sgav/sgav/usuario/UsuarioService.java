@@ -6,10 +6,12 @@ import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.integration.http.dsl.Http;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -154,5 +156,22 @@ public class UsuarioService {
             responseCustom.setResponse("no autorizado");
             return new ResponseEntity<>(responseCustom, HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    public ResponseEntity<?> getUsuarioById(Usuario usuario) {
+
+        Optional<Usuario> newUsuario = Optional.of(new Usuario());
+        if(usuario.getId() == null || usuario.getId() <=0){
+            responseCustom.setResponse("Se requiere id para esta operación");
+            return new ResponseEntity<>(responseCustom,HttpStatus.BAD_REQUEST);
+        }
+
+        newUsuario = usuarioRepository.findById(usuario.getId());
+
+        if(!newUsuario.isPresent()){
+            responseCustom.setResponse("no se encontraron resultados");
+            return new ResponseEntity<>(responseCustom, HttpStatus.NOT_FOUND) ;
+        }
+        return new ResponseEntity<>(newUsuario, HttpStatus.OK);
     }
 }

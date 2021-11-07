@@ -1,5 +1,7 @@
 package com.sgav.sgav.util;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,10 +22,48 @@ public class Helper {
         return matcher.matches();
     }
 
-    public static boolean isValidStringWithNumbers(String str){
-        Pattern pattern = Pattern.compile("^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$" );
+
+
+    public static boolean isValidUsername(String str){
+        String regex = "^[a-zA-Z0-9._-]{6,}$";
+        Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(str);
         return matcher.matches();
+    }
+
+    public static boolean isValidPassword(String str){
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(str);
+        return matcher.matches();
+    }
+
+    public static boolean isValidStringWithNumbers(String str){
+        String accentedCharacters = "àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ";
+        Pattern pattern = Pattern.compile("^[A-Za-z"+accentedCharacters+"0-9 _,;/-]*[A-Za-z"+accentedCharacters+"0-9][A-Za-z"+accentedCharacters+"0-9 _]*$" );
+        Matcher matcher = pattern.matcher(str);
+        return matcher.matches();
+    }
+
+    public static boolean isValidEmail(String str){
+
+        String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        String regexOptional = "^([\\w-\\.]+){1,64}@([\\w&&[^_]]+){2,255}.[a-z]{2,}$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(str);
+
+        Boolean firstFilter = matcher.matches();
+
+        pattern = Pattern.compile(regexOptional);
+        matcher = pattern.matcher(str);
+
+        Boolean secondFilter = matcher.matches();
+        if( firstFilter && secondFilter){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public static boolean isValidPhoneNumber(String str) {

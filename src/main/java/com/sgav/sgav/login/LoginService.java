@@ -1,14 +1,22 @@
 package com.sgav.sgav.login;
 
 import com.google.gson.Gson;
+import com.sgav.sgav.usuario.Usuario;
+import com.sgav.sgav.usuario.UsuarioRepository;
 import com.sgav.sgav.usuario.UsuarioService;
+import com.sgav.sgav.util.Helper;
+import com.sgav.sgav.util.ResponseCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.integration.http.dsl.Http;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LoginService  {
@@ -17,21 +25,86 @@ public class LoginService  {
     private LoginRepository loginRepository;
 
     @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
     private LoginDao loginDao;
 
     @Autowired
     private UsuarioService usuarioService;
 
-    public ResponseEntity<String> addLogin(Login login) throws IOException {
+    ResponseCustom responseCustom = new ResponseCustom();
+
+    public ResponseEntity<?> addLogin(LoginDto login) throws IOException {
 
         if (login.getUsername() != null && !login.getUsername().isEmpty() && login.getPassword() != null && !login.getPassword().isEmpty()) {
+
+
             if (loginDao.getLoginByUsername(login.getUsername()) == null) {
+
                 if(login.getLoggedIn() == null){
+
                     login.setLoggedIn(false);
                 }
-                loginRepository.save(login);
-                return new ResponseEntity<>("Login added OK " + login.getUsername(), HttpStatus.CREATED);
+
+                //validar aca
+                if(!Helper.isValidEmail(login.getEmail())){
+                    responseCustom.setResponse("Email invalido");
+                    return new ResponseEntity<>(responseCustom,HttpStatus.BAD_REQUEST);
+                }
+
+                if(!Helper.isValidUsername(login.getUsername())){
+                    responseCustom.setResponse("Usuario invalido, debe contener 6 caracteres minimo, minusculas,mayusculas, numeros ._- estan permitidos");
+                    return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
+                }
+
+                if(!Helper.isValidPassword(login.getPassword())){
+                    responseCustom.setResponse("Debe contener al menos 8 caracteres y un máximo de 20 caracteres.\n" +
+                            "Debe contener al menos un dígito.\n" +
+                            "Debe contener al menos un alfabeto en mayúsculas.\n" +
+                            "Debe contener al menos un alfabeto en minúscula.\n" +
+                            "Debe contener al menos un carácter especial que incluye! @ # $% & * () - + = ^.\n" +
+                            "No debe contener ningún espacio en blanco.");
+                    return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
+                }
+
+                if(login.getUsuarioId() == null || login.getUsuarioId() <= 0){
+                    responseCustom.setResponse("Se requiere un id de usuario para esta operación");
+                }else{
+                    Login loginAux = new Login();
+                    //find if id usuario ya existe en otro login
+                    loginAux =  loginRepository.findLoginByUsernameId(login.getUsuarioId());
+
+                    if(loginAux != null){
+                        responseCustom.setResponse("Ya existe un login con ese id de usuario");
+                        return new ResponseEntity<>(responseCustom, HttpStatus.OK);
+                    }
+                }
+
+                //find if id usuario exist in table usuario
+                Optional<Usuario> usuario = Optional.of(new Usuario());
+                usuario = usuarioRepository.findById(login.getUsuarioId());
+
+
+                if(!usuario.isPresent()){
+                    responseCustom.setResponse("Se requiere crear un usuario para continuar con el registro");
+                    return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
+                }
+
+                Usuario usuarioPersist = new Usuario();
+                usuarioPersist.setId(login.getUsuarioId());
+                Login loginPersist = new Login();
+                loginPersist.setUsername(login.getUsername());
+                loginPersist.setEmail(login.getEmail());
+                loginPersist.setPassword(login.getPassword());
+                loginPersist.setUsuarioId(usuarioPersist);
+                loginPersist.setLoggedIn(false);
+
+                loginRepository.save(loginPersist);
+                responseCustom.setResponse("Registro exitoso");
+                return new ResponseEntity<>(responseCustom, HttpStatus.OK);
             }else{
+
                 return new ResponseEntity<>("Username already exist " + login.getUsername(), HttpStatus.BAD_REQUEST);
             }
         }
@@ -57,7 +130,7 @@ public class LoginService  {
         return new ResponseEntity<>(login, HttpStatus.OK);
     }
 
-    public  ResponseEntity<?> updateLogin(Login login) {
+    public ResponseEntity<?> updateLogin(Login login) {
 
         Login loginNew = new Login();
         if(login.getId() == null || login.getId() ==0){
@@ -81,13 +154,23 @@ public class LoginService  {
             loginNew.setUsuarioId(null);
         }
 
-        loginRepository.save(loginNew);
+        loginRepository.save(login);
 
-        return new ResponseEntity<>(loginNew,HttpStatus.OK);
+        responseCustom.setResponse("Actualización Exitosa");
+        return new ResponseEntity<>(responseCustom,HttpStatus.OK);
     }
 
-    public void deleteLogin(Login login) {
+    public ResponseEntity<?> deleteLogin(Login login) {
 
+        if(login.getId() == null || login.getId() <= 0){
+            responseCustom.setResponse("id invalido, verificar");
+            return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
+        }
+
+        loginRepository.deleteById(login.getId());
+
+        responseCustom.setResponse("Operación exitosa");
+        return new ResponseEntity<>(responseCustom,HttpStatus.OK);
     }
 
     public void updateLoginStatus(Login login){
@@ -128,5 +211,14 @@ public class LoginService  {
         loginRepository.save(l);
 
         return new ResponseEntity<>("Logged out", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getAllLogin() {
+
+        List<Login> loginList = new ArrayList<>();
+
+        loginList = loginRepository.findAll();
+
+        return new ResponseEntity<>(loginList, HttpStatus.OK);
     }
 }

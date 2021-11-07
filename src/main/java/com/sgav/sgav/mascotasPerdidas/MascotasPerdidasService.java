@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,14 +54,24 @@ public class MascotasPerdidasService {
 
         List<MascotasPerdidas> mascotasPerdidasList = new ArrayList<>();
 
-        mascotasPerdidasList = mascotasPerdidasRepository.findAll();
+        mascotasPerdidasList = mascotasPerdidasRepository.findAllMascotasPerdidasNoEncontradas("t");
+
         if (mascotasPerdidasList.isEmpty()) {
-            return ResponseEntity.badRequest().body("No se encontraron resultados");
+            responseCustom.setResponse("No se encontraron resultados");
+            return new ResponseEntity<>(responseCustom, HttpStatus.OK);
         }
+
+        for(int i=0; i< mascotasPerdidasList.size(); i++){
+            if(mascotasPerdidasList.get(i).getEncontrado()){
+                mascotasPerdidasList.remove(i);
+            }
+        }
+
         return new ResponseEntity<>(mascotasPerdidasList, HttpStatus.OK);
     }
 
     public ResponseEntity<?> addMascotaPerdida(MascotasPerdidas mascotasPerdidas) {
+
 
         if(mascotasPerdidas.getTitulo().isEmpty() || mascotasPerdidas.getTitulo() == null){
             responseCustom.setResponse("Titulo faltante");
@@ -129,5 +140,16 @@ public class MascotasPerdidasService {
         mascotasPerdidasRepository.delete(mascotasPerdidas);
         responseCustom.setResponse("Operación exitosa");
         return new ResponseEntity<>(responseCustom, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> uploadImage(String mascota, MultipartFile file) {
+        MascotasPerdidas m= new MascotasPerdidas();
+        try{
+            mascota.toString();
+        }catch(Exception e){
+            System.out.println("e.printStackTrace()");
+        }
+
+        return new ResponseEntity<>("",HttpStatus.NOT_IMPLEMENTED);
     }
 }

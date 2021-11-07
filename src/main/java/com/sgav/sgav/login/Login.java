@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sgav.sgav.usuario.Usuario;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,9 +27,11 @@ public class Login implements Serializable {
     private String email;
 
     @Column(name = "username")
+    @NonNull
     private String username;
 
     @Column(name = "password")
+    @NonNull
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -36,6 +39,7 @@ public class Login implements Serializable {
     private Usuario usuarioId;
 
     @Column(name = "logged_in")
+    @NonNull
     private Boolean loggedIn;
 
 }
