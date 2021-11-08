@@ -104,19 +104,23 @@ public class VisitanteVehiculoService {
         }
 
         if(!visitanteVehiculo.getPatente().isEmpty()){
-            if(!Helper.isValidStringWithNumbers(visitanteVehiculo.getPatente())){
-                responseCustom.setResponse("Solo se permiten letras y numeros");
+            if(!Helper.isValidPatente(visitanteVehiculo.getPatente())){
+                responseCustom.setResponse("Patente invalida");
                 return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
             }
 
             visitanteVehiculoAux = (VisitanteVehiculo) visitanteVehiculoRepository.findVisitanteVehiculoByPatente(visitanteVehiculo.getPatente());
             if(visitanteVehiculoAux != null){
                 if(!Helper.isNullOrEmpty(visitanteVehiculoAux.getPatente())){
-                    responseCustom.setResponse("ya existe un vehiculo con esa patente");
-                    return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
+                    if(!visitanteVehiculo.getPatente().equalsIgnoreCase(visitanteVehiculoAux.getPatente())){
+                        responseCustom.setResponse("ya existe un vehiculo con esa patente");
+                        return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
+                    }
                 }
             }
         }
+
+        visitanteVehiculo.setPatente(visitanteVehiculo.getPatente().toUpperCase());
 
         visitanteVehiculoRepository.save(visitanteVehiculo);
         responseCustom.setResponse("Operación exitosa");
