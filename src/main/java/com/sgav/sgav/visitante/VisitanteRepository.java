@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 public interface VisitanteRepository extends JpaRepository<Visitante, Integer>, JpaSpecificationExecutor<Visitante> {
@@ -19,4 +20,10 @@ public interface VisitanteRepository extends JpaRepository<Visitante, Integer>, 
 
     @Query(value = "SELECT * FROM Visitante  WHERE unidad_funcional_id = ?", nativeQuery = true)
     List<Visitante> findVisitanteByUnidadFuncionalId(Integer unidad_funcional_id);
+
+    @Query(value = "SELECT * FROM Visitante WHERE fecha_entrada >= :firstDate and fecha_salida <= :secondDate ", nativeQuery = true)
+    List<Visitante> findAllVisitanteBetweenDates(Date firstDate, Date secondDate);
+
+    @Query(value = "SELECT * FROM Visitante WHERE fecha_entrada >= :firstDate", nativeQuery = true)
+    List<Visitante> findAllVisitanteFromDate(Date firstDate);
 }

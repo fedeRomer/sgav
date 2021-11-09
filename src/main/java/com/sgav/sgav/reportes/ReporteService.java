@@ -43,38 +43,37 @@ public class ReporteService {
         ResponseCustom responseCustom = new ResponseCustom();
 
         Boolean searchOnlyFromDateToToday = false;
-        Boolean searchOnlyToDate = false;
         Boolean searchToAndFromDate = false;
-        Boolean searchOnlyTheSameDate = false;
-        Boolean searchAll = false;
 
         if(Helper.isNullOrEmpty(reporteDTO.getTypeOfReport())){
             responseCustom.setResponse("Se requiere el campo Tipo para esta operación");
             return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
-        if(reporteDTO.getFromDate() == null && reporteDTO.getToDate() == null){
-            searchAll = true;
-        }
 
 
 
         if(reporteDTO.getFromDate() != null){
             if(reporteDTO.getToDate() != null){
-                if(reporteDTO.getFromDate() == reporteDTO.getToDate()){
-                    searchOnlyTheSameDate = true;
-                }else{
-                    searchToAndFromDate = true;
-                }
+            //do query from to, date
+                searchToAndFromDate=true;
             }else{
-                searchOnlyFromDateToToday=true;
+                //do query from to today
+                searchOnlyFromDateToToday = true;
             }
         }
 
         if(reporteDTO.getTypeOfReport().equalsIgnoreCase("VISITAS")){
             List<Visitante> visitanteList = new ArrayList<>();
 
-            visitanteList = visitanteRepository.findAll();
+
+            if(searchToAndFromDate){
+                visitanteList = visitanteRepository.findAllVisitanteBetweenDates(reporteDTO.getFromDate(),reporteDTO.getToDate());
+            }else if(searchOnlyFromDateToToday){
+                visitanteList = visitanteRepository.findAllVisitanteFromDate(reporteDTO.getFromDate());
+            }else{
+                visitanteList = visitanteRepository.findAll();
+            }
 
             return new ResponseEntity<>(visitanteList, HttpStatus.OK);
 
@@ -82,7 +81,13 @@ public class ReporteService {
         } else if (reporteDTO.getTypeOfReport().equalsIgnoreCase("VISITASVEHICULO")) {
 
             List<VisitanteVehiculo> visitanteVehiculos = new ArrayList<>();
+
+            if(searchToAndFromDate){
+
+            }
+
             visitanteVehiculos = visitanteVehiculoRepository.findAll();
+
             return new ResponseEntity<>(visitanteVehiculos, HttpStatus.OK);
         } else if (reporteDTO.getTypeOfReport().equalsIgnoreCase("MULTAS")) {
 
