@@ -26,4 +26,7 @@ public interface VisitanteRepository extends JpaRepository<Visitante, Integer>, 
 
     @Query(value = "SELECT * FROM Visitante WHERE fecha_entrada >= :firstDate", nativeQuery = true)
     List<Visitante> findAllVisitanteFromDate(Date firstDate);
+
+    @Query(value = "SELECT * FROM Visitante WHERE fecha_salida <= :secondDate", nativeQuery = true)
+    List<Visitante> findAllVisitanteToDate(Date secondDate);
 }

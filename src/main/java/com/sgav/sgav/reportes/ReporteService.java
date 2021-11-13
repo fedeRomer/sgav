@@ -44,12 +44,16 @@ public class ReporteService {
 
         Boolean searchOnlyFromDateToToday = false;
         Boolean searchToAndFromDate = false;
+        Boolean searchToDate = false;
 
         if(Helper.isNullOrEmpty(reporteDTO.getTypeOfReport())){
             responseCustom.setResponse("Se requiere el campo Tipo para esta operación");
             return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
         }
 
+        if(reporteDTO.getFromDate() == null && reporteDTO.getToDate() != null){
+            searchToDate = true;
+        }
 
 
 
@@ -71,6 +75,9 @@ public class ReporteService {
                 visitanteList = visitanteRepository.findAllVisitanteBetweenDates(reporteDTO.getFromDate(),reporteDTO.getToDate());
             }else if(searchOnlyFromDateToToday){
                 visitanteList = visitanteRepository.findAllVisitanteFromDate(reporteDTO.getFromDate());
+            }else if(searchToDate){
+                visitanteList = visitanteRepository.findAllVisitanteToDate(reporteDTO.getToDate());
+
             }else{
                 visitanteList = visitanteRepository.findAll();
             }
