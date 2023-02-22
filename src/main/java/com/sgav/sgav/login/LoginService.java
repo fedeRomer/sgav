@@ -94,7 +94,7 @@ public class LoginService  {
                 //Usuario usuarioPersist = new Usuario();
                 //usuarioPersist.setId(login.getUsuarioId());
                 Login loginPersist = new Login();
-                loginPersist.setUsername(login.getUsername());
+                loginPersist.setUsername(login.getEmail());
                 loginPersist.setEmail(login.getEmail());
                 loginPersist.setPassword(login.getPassword());
                 loginPersist.setUsuarioId(usuario.get());
