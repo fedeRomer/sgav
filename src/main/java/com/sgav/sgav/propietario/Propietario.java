@@ -1,5 +1,7 @@
 package com.sgav.sgav.propietario;
 
+import com.sgav.sgav.unidadFuncional.UnidadFuncional;
+import com.sgav.sgav.usuario.Usuario;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,10 +19,12 @@ public class Propietario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "unidad_funcional_id")
-    private Integer unidadFuncionalId;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "unidad_funcional_id")
+    private UnidadFuncional unidadFuncionalId;
 
-    @Column(name = "usuario_id")
-    private Integer usuarioId;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuarioId;
 
 }

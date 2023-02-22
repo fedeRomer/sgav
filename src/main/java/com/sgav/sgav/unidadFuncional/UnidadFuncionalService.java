@@ -138,7 +138,7 @@ public class UnidadFuncionalService {
 
             login = loginRepository.findLoginByUsername(logRequest.getUsername());
             propietario = propietarioRepository.findPropietarioByUsuarioId(login.getUsuarioId().getId());
-            unidadFuncional = unidadFuncionalRepository.findById(propietario.getUnidadFuncionalId());
+            unidadFuncional = unidadFuncionalRepository.findById(propietario.getUnidadFuncionalId().getId());
 
         } catch (Exception e) {
             responseCustom.setResponse("Se produjo un error al buscar el usuario");

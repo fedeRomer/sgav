@@ -91,13 +91,13 @@ public class LoginService  {
                     return new ResponseEntity<>(responseCustom, HttpStatus.BAD_REQUEST);
                 }
 
-                Usuario usuarioPersist = new Usuario();
-                usuarioPersist.setId(login.getUsuarioId());
+                //Usuario usuarioPersist = new Usuario();
+                //usuarioPersist.setId(login.getUsuarioId());
                 Login loginPersist = new Login();
                 loginPersist.setUsername(login.getUsername());
                 loginPersist.setEmail(login.getEmail());
                 loginPersist.setPassword(login.getPassword());
-                loginPersist.setUsuarioId(usuarioPersist);
+                loginPersist.setUsuarioId(usuario.get());
                 loginPersist.setLoggedIn(false);
 
                 loginRepository.save(loginPersist);

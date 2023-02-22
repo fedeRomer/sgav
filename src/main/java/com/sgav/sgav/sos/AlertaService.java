@@ -82,7 +82,7 @@ public class AlertaService {
         try {
             login = loginRepository.findLoginByUsername(alerta.getUsuario());
             propietario = propietarioRepository.findPropietarioByUsuarioId(login.getUsuarioId().getId());
-            unidadFuncional = unidadFuncionalRepository.findById(propietario.getUnidadFuncionalId());
+            unidadFuncional = unidadFuncionalRepository.findById(propietario.getUnidadFuncionalId().getId());
             alerta.setUnidadFuncional(String.valueOf(unidadFuncional.get().getNumeroUf()));
         } catch (Exception e) {
             responseCustom.setResponse("Se produjo un error al buscar el usuario");
